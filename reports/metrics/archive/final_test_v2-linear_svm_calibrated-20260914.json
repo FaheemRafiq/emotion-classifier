@@ -1,0 +1,69 @@
+{
+  "model_version": "v2-linear_svm_calibrated-20260914",
+  "evaluated_at": "2026-09-14T19:15:22+00:00",
+  "forced_reason": null,
+  "metrics": {
+    "accuracy": 0.7667647058823529,
+    "macro_precision": 0.7481134320985411,
+    "macro_recall": 0.6238311236741125,
+    "macro_f1": 0.6719628327833326,
+    "weighted_f1": 0.7562491981373579,
+    "per_class": {
+      "joy": {
+        "precision": 0.8627935723114957,
+        "recall": 0.8574938574938575,
+        "f1-score": 0.860135551447936,
+        "support": 814.0
+      },
+      "sadness": {
+        "precision": 0.7794117647058824,
+        "recall": 0.4953271028037383,
+        "f1-score": 0.6057142857142858,
+        "support": 107.0
+      },
+      "fear_anxiety": {
+        "precision": 0.6956521739130435,
+        "recall": 0.6,
+        "f1-score": 0.6442953020134228,
+        "support": 80.0
+      },
+      "anger_frustration": {
+        "precision": 0.6854838709677419,
+        "recall": 0.4627949183303085,
+        "f1-score": 0.5525460455037919,
+        "support": 551.0
+      },
+      "guilt": {
+        "precision": 0.7169811320754716,
+        "recall": 0.5671641791044776,
+        "f1-score": 0.6333333333333333,
+        "support": 67.0
+      },
+      "motivation": {
+        "precision": 0.75,
+        "recall": 0.4943181818181818,
+        "f1-score": 0.5958904109589042,
+        "support": 176.0
+      },
+      "neutral": {
+        "precision": 0.7464715107161526,
+        "recall": 0.8897196261682243,
+        "f1-score": 0.8118249005116543,
+        "support": 1605.0
+      },
+      "accuracy": 0.7667647058823529,
+      "macro avg": {
+        "precision": 0.7481134320985411,
+        "recall": 0.6238311236741125,
+        "f1-score": 0.6719628327833326,
+        "support": 3400.0
+      },
+      "weighted avg": {
+        "precision": 0.7638792129558346,
+        "recall": 0.7667647058823529,
+        "f1-score": 0.7562491981373579,
+        "support": 3400.0
+      }
+    }
+  }
+}

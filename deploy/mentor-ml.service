@@ -1,0 +1,17 @@
+# systemd user unit for the Mentor AI emotion classifier.
+# Install:  mkdir -p ~/.config/systemd/user && cp deploy/mentor-ml.service ~/.config/systemd/user/
+#           systemctl --user daemon-reload && systemctl --user enable --now mentor-ml
+# Logs:     journalctl --user -u mentor-ml -f
+[Unit]
+Description=Mentor AI emotion classifier (FastAPI)
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=%h/Coding/python
+ExecStart=/usr/bin/uv run --frozen uvicorn app.main:app --host 127.0.0.1 --port 8001
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=default.target

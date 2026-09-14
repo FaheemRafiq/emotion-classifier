@@ -1,0 +1,71 @@
+{
+  "id": "E3",
+  "model": "linear_svm",
+  "settings": "TF-IDF ngram=(1, 2) min_df=1 max_df=0.95 sublinear=True; C=0.5; class_weight=balanced",
+  "eval_split": "validation",
+  "cv_macro_f1": 0.6355626804031776,
+  "metrics": {
+    "accuracy": 0.7680857398035129,
+    "macro_precision": 0.7059198920519544,
+    "macro_recall": 0.6886354439872224,
+    "macro_f1": 0.6962403575187533,
+    "weighted_f1": 0.7665288245575895,
+    "per_class": {
+      "joy": {
+        "precision": 0.8622273249138921,
+        "recall": 0.8722415795586528,
+        "f1-score": 0.8672055427251733,
+        "support": 861.0
+      },
+      "sadness": {
+        "precision": 0.5686274509803921,
+        "recall": 0.6373626373626373,
+        "f1-score": 0.6010362694300518,
+        "support": 91.0
+      },
+      "fear_anxiety": {
+        "precision": 0.6818181818181818,
+        "recall": 0.625,
+        "f1-score": 0.6521739130434783,
+        "support": 72.0
+      },
+      "anger_frustration": {
+        "precision": 0.5886214442013129,
+        "recall": 0.5412474849094567,
+        "f1-score": 0.5639412997903563,
+        "support": 497.0
+      },
+      "guilt": {
+        "precision": 0.7407407407407407,
+        "recall": 0.6557377049180327,
+        "f1-score": 0.6956521739130435,
+        "support": 61.0
+      },
+      "motivation": {
+        "precision": 0.7078651685393258,
+        "recall": 0.6774193548387096,
+        "f1-score": 0.6923076923076923,
+        "support": 186.0
+      },
+      "neutral": {
+        "precision": 0.7915389331698345,
+        "recall": 0.8114393463230672,
+        "f1-score": 0.8013656114214773,
+        "support": 1591.0
+      },
+      "accuracy": 0.7680857398035129,
+      "macro avg": {
+        "precision": 0.7059198920519544,
+        "recall": 0.6886354439872224,
+        "f1-score": 0.6962403575187533,
+        "support": 3359.0
+      },
+      "weighted avg": {
+        "precision": 0.765687746607843,
+        "recall": 0.7680857398035129,
+        "f1-score": 0.7665288245575895,
+        "support": 3359.0
+      }
+    }
+  }
+}

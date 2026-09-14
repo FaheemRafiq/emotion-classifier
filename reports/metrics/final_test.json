@@ -1,0 +1,110 @@
+{
+  "model_version": "v2-fs2-linear_svm_calibrated-20260914",
+  "model_path": "/home/faheem/Coding/python/models/emotion_classifier.joblib",
+  "evaluated_at": "2026-09-14T19:47:37+00:00",
+  "forced_reason": "new model version (feature set fs2 + isotonic calibration); selection was done on validation only",
+  "metrics": {
+    "accuracy": 0.7794117647058824,
+    "macro_precision": 0.735670197521508,
+    "macro_recall": 0.6541778383421193,
+    "macro_f1": 0.6862446221134108,
+    "weighted_f1": 0.7717774549490041,
+    "per_class": {
+      "joy": {
+        "precision": 0.852975495915986,
+        "recall": 0.898034398034398,
+        "f1-score": 0.8749251944943148,
+        "support": 814.0
+      },
+      "sadness": {
+        "precision": 0.6973684210526315,
+        "recall": 0.4953271028037383,
+        "f1-score": 0.5792349726775956,
+        "support": 107.0
+      },
+      "fear_anxiety": {
+        "precision": 0.6585365853658537,
+        "recall": 0.675,
+        "f1-score": 0.6666666666666666,
+        "support": 80.0
+      },
+      "anger_frustration": {
+        "precision": 0.6761904761904762,
+        "recall": 0.515426497277677,
+        "f1-score": 0.5849639546858908,
+        "support": 551.0
+      },
+      "guilt": {
+        "precision": 0.6724137931034483,
+        "recall": 0.582089552238806,
+        "f1-score": 0.624,
+        "support": 67.0
+      },
+      "motivation": {
+        "precision": 0.8135593220338984,
+        "recall": 0.5454545454545454,
+        "f1-score": 0.6530612244897959,
+        "support": 176.0
+      },
+      "neutral": {
+        "precision": 0.7786472889882616,
+        "recall": 0.8679127725856698,
+        "f1-score": 0.8208603417796111,
+        "support": 1605.0
+      },
+      "accuracy": 0.7794117647058824,
+      "macro avg": {
+        "precision": 0.735670197521508,
+        "recall": 0.6541778383421193,
+        "f1-score": 0.6862446221134108,
+        "support": 3400.0
+      },
+      "weighted avg": {
+        "precision": 0.7741680639942712,
+        "recall": 0.7794117647058824,
+        "f1-score": 0.7717774549490041,
+        "support": 3400.0
+      }
+    }
+  },
+  "calibration": {
+    "ece": 0.026236836364488356,
+    "thresholds": [
+      {
+        "threshold": 0.0,
+        "coverage": 1.0,
+        "accuracy_at_threshold": 0.7794117647058824,
+        "non_neutral_sent": 0.4738235294117647,
+        "non_neutral_precision": 0.7802607076350093
+      },
+      {
+        "threshold": 0.4,
+        "coverage": 0.9794117647058823,
+        "accuracy_at_threshold": 0.7888888888888889,
+        "non_neutral_sent": 0.46176470588235297,
+        "non_neutral_precision": 0.7942675159235669
+      },
+      {
+        "threshold": 0.5,
+        "coverage": 0.908235294117647,
+        "accuracy_at_threshold": 0.8137953367875648,
+        "non_neutral_sent": 0.4208823529411765,
+        "non_neutral_precision": 0.8336827393431167
+      },
+      {
+        "threshold": 0.6,
+        "coverage": 0.7838235294117647,
+        "accuracy_at_threshold": 0.850656660412758,
+        "non_neutral_sent": 0.34852941176470587,
+        "non_neutral_precision": 0.8767932489451477
+      },
+      {
+        "threshold": 0.7,
+        "coverage": 0.6570588235294118,
+        "accuracy_at_threshold": 0.8764547896150403,
+        "non_neutral_sent": 0.29,
+        "non_neutral_precision": 0.9087221095334685
+      }
+    ]
+  }
+}

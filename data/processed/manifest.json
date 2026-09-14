@@ -1,0 +1,135 @@
+{
+  "dataset": "google-research-datasets/go_emotions (simplified)",
+  "label_map_version": "v2",
+  "label_map": {
+    "joy": [
+      "joy",
+      "amusement",
+      "excitement",
+      "gratitude",
+      "relief",
+      "love"
+    ],
+    "sadness": [
+      "sadness",
+      "grief"
+    ],
+    "fear_anxiety": [
+      "fear",
+      "nervousness"
+    ],
+    "anger_frustration": [
+      "anger",
+      "disgust",
+      "annoyance",
+      "disappointment"
+    ],
+    "guilt": [
+      "remorse",
+      "embarrassment"
+    ],
+    "motivation": [
+      "optimism",
+      "desire",
+      "pride"
+    ],
+    "neutral": [
+      "neutral"
+    ]
+  },
+  "dropped_source_labels": [
+    "admiration",
+    "approval",
+    "caring",
+    "confusion",
+    "curiosity",
+    "disapproval",
+    "realization",
+    "surprise"
+  ],
+  "classes": [
+    "joy",
+    "sadness",
+    "fear_anxiety",
+    "anger_frustration",
+    "guilt",
+    "motivation",
+    "neutral"
+  ],
+  "splits": {
+    "train": {
+      "file": "train.parquet",
+      "sha256": "950072a33e263c205daa95bfe7c49a01b16b04b737351115c4ec60dd65482485",
+      "rows": 26947,
+      "class_counts": {
+        "joy": 6743,
+        "sadness": 868,
+        "fear_anxiety": 536,
+        "anger_frustration": 4119,
+        "guilt": 559,
+        "motivation": 1341,
+        "neutral": 12781
+      },
+      "filtering": {
+        "raw_rows": 43410,
+        "kept_after_mapping": 27134,
+        "removed_only_unmapped_labels": 11182,
+        "removed_partially_unmapped_labels": 3539,
+        "removed_conflicting_mentor_classes": 1555,
+        "removed_empty_text": 0,
+        "removed_exact_duplicates": 108,
+        "removed_same_text_different_labels": 38,
+        "removed_overlap_with_validation_or_test": 41
+      }
+    },
+    "validation": {
+      "file": "validation.parquet",
+      "sha256": "0028655e7ef65ddea4d48b08658de19b04520ccb6c6158f684b8e669d03b3473",
+      "rows": 3359,
+      "class_counts": {
+        "joy": 861,
+        "sadness": 91,
+        "fear_anxiety": 72,
+        "anger_frustration": 497,
+        "guilt": 61,
+        "motivation": 186,
+        "neutral": 1591
+      },
+      "filtering": {
+        "raw_rows": 5426,
+        "kept_after_mapping": 3368,
+        "removed_partially_unmapped_labels": 437,
+        "removed_only_unmapped_labels": 1426,
+        "removed_conflicting_mentor_classes": 195,
+        "removed_empty_text": 0,
+        "removed_exact_duplicates": 2,
+        "removed_same_text_different_labels": 0,
+        "removed_overlap_with_test": 7
+      }
+    },
+    "test": {
+      "file": "test.parquet",
+      "sha256": "b43eea44f574bf5cec278ff8c2fb84d56f3435a079e997be0b5bb1759bb703e2",
+      "rows": 3400,
+      "class_counts": {
+        "joy": 814,
+        "sadness": 107,
+        "fear_anxiety": 80,
+        "anger_frustration": 551,
+        "guilt": 67,
+        "motivation": 176,
+        "neutral": 1605
+      },
+      "filtering": {
+        "raw_rows": 5427,
+        "kept_after_mapping": 3405,
+        "removed_only_unmapped_labels": 1431,
+        "removed_partially_unmapped_labels": 409,
+        "removed_conflicting_mentor_classes": 182,
+        "removed_empty_text": 0,
+        "removed_exact_duplicates": 5,
+        "removed_same_text_different_labels": 0
+      }
+    }
+  }
+}

@@ -1,0 +1,97 @@
+{
+  "id": "E4",
+  "model": "distilbert",
+  "features": "transformer",
+  "settings": "distilbert-base-uncased; epochs=4 batch=32 lr=3e-05 max_len=128 fp16 warmup=10% weight_decay=0.01 loss=sqrt-inverse-freq weighted CE",
+  "eval_split": "validation",
+  "metrics": {
+    "accuracy": 0.791604644239357,
+    "macro_precision": 0.713559064063892,
+    "macro_recall": 0.7441433306817312,
+    "macro_f1": 0.7275561368943965,
+    "weighted_f1": 0.791228633594524,
+    "per_class": {
+      "joy": {
+        "precision": 0.8468848996832101,
+        "recall": 0.9314750290360047,
+        "f1-score": 0.8871681415929203,
+        "support": 861.0
+      },
+      "sadness": {
+        "precision": 0.5773195876288659,
+        "recall": 0.6153846153846154,
+        "f1-score": 0.5957446808510638,
+        "support": 91.0
+      },
+      "fear_anxiety": {
+        "precision": 0.726027397260274,
+        "recall": 0.7361111111111112,
+        "f1-score": 0.7310344827586207,
+        "support": 72.0
+      },
+      "anger_frustration": {
+        "precision": 0.6528066528066528,
+        "recall": 0.6317907444668008,
+        "f1-score": 0.6421267893660532,
+        "support": 497.0
+      },
+      "guilt": {
+        "precision": 0.7272727272727273,
+        "recall": 0.7868852459016393,
+        "f1-score": 0.7559055118110236,
+        "support": 61.0
+      },
+      "motivation": {
+        "precision": 0.6175115207373272,
+        "recall": 0.7204301075268817,
+        "f1-score": 0.6650124069478908,
+        "support": 186.0
+      },
+      "neutral": {
+        "precision": 0.8470906630581867,
+        "recall": 0.7869264613450659,
+        "f1-score": 0.815900944933203,
+        "support": 1591.0
+      },
+      "accuracy": 0.791604644239357,
+      "macro avg": {
+        "precision": 0.713559064063892,
+        "recall": 0.7441433306817312,
+        "f1-score": 0.7275561368943965,
+        "support": 3359.0
+      },
+      "weighted avg": {
+        "precision": 0.7934995189923998,
+        "recall": 0.791604644239357,
+        "f1-score": 0.791228633594524,
+        "support": 3359.0
+      }
+    }
+  },
+  "history": [
+    {
+      "epoch": 1,
+      "train_loss": 1.0604235919132776,
+      "val_macro_f1": 0.7050023464783272,
+      "seconds": 162.02686132300005
+    },
+    {
+      "epoch": 2,
+      "train_loss": 0.6304926412138084,
+      "val_macro_f1": 0.7275561368943965,
+      "seconds": 159.67629754800146
+    },
+    {
+      "epoch": 3,
+      "train_loss": 0.45562637542967693,
+      "val_macro_f1": 0.7148183741103367,
+      "seconds": 167.6016702699999
+    },
+    {
+      "epoch": 4,
+      "train_loss": 0.33251136144532567,
+      "val_macro_f1": 0.7212466794979819,
+      "seconds": 159.7385235210022
+    }
+  ]
+}

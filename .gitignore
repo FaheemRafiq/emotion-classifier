@@ -1,0 +1,17 @@
+# Environment
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Data (re-created by `make data`; manifest.json is kept to document the frozen split)
+data/raw/
+data/processed/*.parquet
+
+# Model artifacts (re-created by `make evaluate` / `make transformer`; model_card.json and frozen_config.json are kept)
+models/*.joblib
+models/distilbert/
+
+# Generated report HTML (the PDF is kept)
+reports/*.html

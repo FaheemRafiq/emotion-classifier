@@ -1,0 +1,6 @@
+id,timestamp,label_map,features,model,settings,eval_split,accuracy,macro_precision,macro_recall,macro_f1,weighted_f1,cv_macro_f1,purpose
+E1,2026-09-14T19:11:30+00:00,v2,fs1,logreg,"TF-IDF ngram=(1, 2) min_df=2 max_df=0.95 sublinear=True; C=1.0; class_weight=balanced",validation,0.7312,0.6198,0.6871,0.6483,0.7360,,Baseline
+E2,2026-09-14T19:11:32+00:00,v2,fs1,linear_svm,"TF-IDF ngram=(1, 2) min_df=2 max_df=0.95 sublinear=True; C=1.0; class_weight=balanced",validation,0.7502,0.6833,0.6635,0.6722,0.7487,,Comparison
+E3,2026-09-14T19:13:35+00:00,v2,fs1,linear_svm,"TF-IDF ngram=(1, 2) min_df=1 max_df=0.95 sublinear=True; C=0.5; class_weight=balanced",validation,0.7681,0.7059,0.6886,0.6962,0.7665,0.6356,Best candidate (tuned)
+E3-cal,2026-09-14T19:13:39+00:00,v2,fs1,linear_svm_calibrated,"TF-IDF ngram=(1, 2) min_df=1 max_df=0.95 sublinear=True; C=0.5; class_weight=balanced; sigmoid calibration cv=3",validation,0.7705,0.7648,0.6418,0.6920,0.7636,0.6356,Best candidate with calibrated probabilities
+E3-final,2026-09-14T19:15:22+00:00,v2,fs1,linear_svm_calibrated,"TF-IDF ngram=(1, 2) min_df=1 max_df=0.95 sublinear=True; C=0.5; class_weight=balanced",test,0.7668,0.7481,0.6238,0.6720,0.7562,0.6356,Final model (single test evaluation)

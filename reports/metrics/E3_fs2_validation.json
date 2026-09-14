@@ -1,0 +1,72 @@
+{
+  "id": "E3",
+  "model": "linear_svm",
+  "features": "fs2",
+  "settings": "fs2: word TF-IDF ngram=(1, 2) min_df=1 max_df=0.95 sublinear=True + emoji/punct tokens + char_wb(2,5); C=0.25; class_weight=balanced",
+  "eval_split": "validation",
+  "cv_macro_f1": 0.6628614487114003,
+  "metrics": {
+    "accuracy": 0.7799940458469783,
+    "macro_precision": 0.7153681133883735,
+    "macro_recall": 0.7159514329296915,
+    "macro_f1": 0.7148933429428589,
+    "weighted_f1": 0.7783374676435801,
+    "per_class": {
+      "joy": {
+        "precision": 0.8615209988649262,
+        "recall": 0.8815331010452961,
+        "f1-score": 0.8714121699196326,
+        "support": 861.0
+      },
+      "sadness": {
+        "precision": 0.5784313725490197,
+        "recall": 0.6483516483516484,
+        "f1-score": 0.6113989637305699,
+        "support": 91.0
+      },
+      "fear_anxiety": {
+        "precision": 0.6944444444444444,
+        "recall": 0.6944444444444444,
+        "f1-score": 0.6944444444444444,
+        "support": 72.0
+      },
+      "anger_frustration": {
+        "precision": 0.614190687361419,
+        "recall": 0.5573440643863179,
+        "f1-score": 0.5843881856540084,
+        "support": 497.0
+      },
+      "guilt": {
+        "precision": 0.7142857142857143,
+        "recall": 0.7377049180327869,
+        "f1-score": 0.7258064516129032,
+        "support": 61.0
+      },
+      "motivation": {
+        "precision": 0.7396449704142012,
+        "recall": 0.6720430107526881,
+        "f1-score": 0.704225352112676,
+        "support": 186.0
+      },
+      "neutral": {
+        "precision": 0.8050586057988895,
+        "recall": 0.8202388434946575,
+        "f1-score": 0.8125778331257784,
+        "support": 1591.0
+      },
+      "accuracy": 0.7799940458469783,
+      "macro avg": {
+        "precision": 0.7153681133883735,
+        "recall": 0.7159514329296915,
+        "f1-score": 0.7148933429428589,
+        "support": 3359.0
+      },
+      "weighted avg": {
+        "precision": 0.7775091519612357,
+        "recall": 0.7799940458469783,
+        "f1-score": 0.7783374676435801,
+        "support": 3359.0
+      }
+    }
+  }
+}

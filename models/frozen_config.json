@@ -1,0 +1,17 @@
+{
+  "kind": "linear_svm",
+  "C": 0.25,
+  "features": "fs2",
+  "tfidf": {
+    "ngram_range": [
+      1,
+      2
+    ],
+    "min_df": 1
+  },
+  "calibrated": true,
+  "cv_macro_f1": 0.6628614487114003,
+  "label_map_version": "v2",
+  "frozen_at": "2026-09-14T19:35:11+00:00",
+  "calibration": "isotonic, cv=3, ensemble=False (chosen on validation)"
+}

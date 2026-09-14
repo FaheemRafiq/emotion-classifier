@@ -18,8 +18,8 @@ Before the numbers are quoted anywhere:
 
 ## Usage
 ```bash
-uv run python -m src.eval_domain                       # scores models/emotion_classifier.joblib
-uv run python -m src.eval_domain --model models/distilbert
+make domain-eval                                          # scores the default model (DistilBERT if trained)
+make domain-eval MODEL=models/emotion_classifier.joblib   # scores the TF-IDF fallback
 ```
 Results go to `reports/metrics/domain_eval_<model_version>.json`.
 

@@ -78,8 +78,23 @@ class TransformerPredictor:
 Predictor = SklearnPredictor | TransformerPredictor
 
 
+def default_model_path() -> Path:
+    """MODEL_PATH env if set; else the fine-tuned DistilBERT if trained and PyTorch is installed; else the joblib model."""
+    if os.environ.get("MODEL_PATH"):
+        return Path(os.environ["MODEL_PATH"])
+    if (config.TRANSFORMER_DIR / "model_card.json").exists():
+        try:
+            import torch  # noqa: F401
+            import transformers  # noqa: F401
+
+            return config.TRANSFORMER_DIR
+        except ImportError:
+            print("DistilBERT found but the `transformer` extra is not installed; serving the TF-IDF model instead.")
+    return config.MODEL_PATH
+
+
 def load_predictor(path: str | os.PathLike | None = None) -> Predictor:
-    path = Path(path or os.environ.get("MODEL_PATH", config.MODEL_PATH))
+    path = Path(path) if path else default_model_path()
     if path.is_dir():
         return TransformerPredictor(path)
     if not path.exists():

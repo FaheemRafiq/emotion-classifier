@@ -1,149 +1,184 @@
 # Mentor AI — Emotion Classifier
 
-A supervised NLP classifier that reads a user's journal entry, check-in, or message and predicts an emotion class with a
-calibrated confidence. The prediction is passed to the Mentor AI LLM as structured context; the LLM still writes the
+A supervised NLP classifier that reads a user's journal entry, check-in, or message and predicts one of seven emotion classes
+with a calibrated confidence. The prediction is passed to the Mentor AI LLM as structured context; the LLM still writes the
 reply. **This is emotion classification of text, not a medical or psychological diagnosis.**
 
 Built following `Mentor_AI_Local_Model_Training_Guide.pdf` on Fedora 44 (plan: `PLAN.md`).
+**Full FYP write-up with methodology, figures and results:** `reports/Mentor_AI_Emotion_Classifier_Report.pdf`.
 
 ```
 React / PWA
     │
 Node.js / Express (mentor-ai/apps/api)  ──►  PostgreSQL
-    │  POST /predict (1.5 s timeout, optional)
+    │  POST /predict (1.5 s timeout, optional, fails open)
 Python / FastAPI  (this repo, 127.0.0.1:8001)
     │
-TF-IDF + calibrated LinearSVM pipeline (models/emotion_classifier.joblib)
+DistilBERT (default)  or  TF-IDF + calibrated LinearSVM (fallback)
     │
 emotion + confidence ──► Mentor AI system prompt ──► LLM ──► final response
 ```
+
+Classes: `joy`, `sadness`, `fear_anxiety`, `anger_frustration`, `guilt`, `motivation`, `neutral`.
 
 ## Setup (Fedora)
 ```bash
 sudo dnf install -y uv python3.12
 cd ~/Coding/python
-uv sync                        # creates .venv from uv.lock (Python 3.12)
+uv sync --extra transformer    # Python 3.12 venv from uv.lock, incl. CUDA 13 PyTorch for DistilBERT
 uv run python -m ipykernel install --user --name mentor-ai-ml   # optional, for notebooks
 ```
-No GPU or CUDA is needed. `requirements.txt` is exported from `uv.lock` for pip users.
+Without `--extra transformer` everything still works using the TF-IDF model (no GPU needed). `requirements.txt` is
+exported from `uv.lock` for pip users. Model weights and processed data are not in git; the commands below rebuild them.
 
-## Reproduce the whole pipeline
+## Reproduce
 ```bash
-make all        # data -> train -> tune -> evaluate -> test
+make all                 # data -> train -> tune -> evaluate -> test   (TF-IDF models, ~10 min on CPU)
+make transformer         # E4: fine-tune DistilBERT on the GPU        (~11 min on an RTX 3050)
+make evaluate-transformer
+make domain-eval         # score on the Mentor-style sentences
+uv run python -m src.report   # regenerate the PDF report from the saved results
 ```
 | Step | Command | Writes |
 |---|---|---|
 | Prepare data | `make data` | `data/processed/*.parquet`, `manifest.json` (SHA-256 hashes that freeze the splits) |
 | Baselines E1/E2 | `make train` | validation metrics, confusion matrices, rows in `reports/metrics/experiments.csv` |
-| Tuning E3 | `make tune` | `E3_cv_results.csv`, `models/frozen_config.json` |
-| Final test (once) | `make evaluate` | `models/emotion_classifier.joblib`, `model_card.json`, `final_test.json` |
+| Tuning E3 | `make tune` | CV results, `models/frozen_config.json` |
+| Final test (once per model) | `make evaluate` | `models/emotion_classifier.joblib`, `model_card.json`, `final_test_<version>.json` |
+| DistilBERT E4 | `make transformer` | `models/distilbert/` (weights, tokenizer, `model_card.json` incl. temperature) |
+| Domain eval | `make domain-eval` | `reports/metrics/domain_eval_<version>.json` |
 | Tests | `make test` | — |
-| Predict | `uv run python -m src.predict "some text"` | — |
-| Serve | `make serve` | FastAPI on `127.0.0.1:8001` |
 
-`make evaluate` refuses to run a second time. Reusing the test set would be test-set tuning, so it needs
-`--force --reason "..."`, and the reason is logged.
+The test set is used **once per model version**. `src/evaluate.py` refuses to reuse it without `--force --reason "..."`,
+and every reason is logged in `reports/metrics/forced_reruns.log`. Models are chosen on validation and on the Mentor-domain
+set, never on test scores.
 
-Notebooks: `notebooks/01_dataset_exploration.ipynb` (dataset inspection) and `notebooks/02_model_experiments.ipynb`
-(experiment comparison). Both read their numbers from the generated files.
+## Results (all numbers measured)
+### Model comparison
+| Model | Validation macro F1 | Test macro F1 | Test accuracy | Test ECE | Mentor-domain macro F1 |
+|---|---:|---:|---:|---:|---:|
+| TF-IDF words (fs1) + LinearSVM, sigmoid | 0.692 | 0.672 | 0.767 | — | 0.389 |
+| TF-IDF words + emoji + char n-grams (fs2) + LinearSVM, isotonic | 0.711 | 0.686 | 0.779 | 0.026 | 0.431 |
+| **DistilBERT, temperature-calibrated (deployed)** | **0.728** | **0.717** | **0.787** | **0.015** | **0.602** |
 
-## Data and labels
-GoEmotions (CC BY 4.0) is mapped to a 7-class Mentor AI taxonomy: `joy`, `sadness`, `fear_anxiety`, `anger_frustration`,
-`guilt`, `motivation`, `neutral`. Only examples whose labels all map to one class are kept; the final split sizes are
-26,947 train, 3,359 validation, and 3,400 test.
+The Mentor-domain column is scored on 154 check-in style sentences in `data/mentor_eval/`. **Their labels are still an
+unreviewed draft**, so treat that column as provisional until the review is done (see its README). It shows the real
+story: models trained on Reddit comments struggle with journal-style text, and DistilBERT closes a large part of that gap.
 
-The guide's suggested `anger` and `frustration` classes were merged, because `frustration` reached a validation F1 of only 0.27–0.29.
-The evidence and decision are in `data/label_mapping.md`, and the v1 results are archived in `reports/*/label_map_v1/`.
-Filtering details are in `data/README.md`.
+All experiments on validation:
 
-## Results (label map v2; all numbers measured)
-Leakage-free protocol:
-- TF-IDF lives inside the sklearn `Pipeline`, so it is only fitted on training text.
-- Model selection uses 3-fold cross-validation on train and a check on validation.
-- The test set was used exactly once, for the final model.
+| ID | Features | Model | Validation macro F1 | CV macro F1 |
+|---|---|---|---:|---:|
+| E1 | fs1 | Logistic Regression | 0.648 | |
+| E2 | fs1 | LinearSVM | 0.672 | |
+| E3 | fs1 | LinearSVM, tuned (C=0.5, min_df=1) | 0.696 | 0.636 |
+| E1 | fs2 | Logistic Regression | 0.675 | |
+| E2 | fs2 | LinearSVM | 0.697 | |
+| E3 | fs2 | LinearSVM, tuned (C=0.25, min_df=1) | 0.715 | 0.663 |
+| E3-iso | fs2 | E3 + isotonic calibration (TF-IDF fallback) | 0.711 | 0.663 |
+| E4 | — | DistilBERT, 4 epochs, best epoch 2, fp16 | 0.728 | |
 
-| ID | Model | Settings | Split | Accuracy | Macro P | Macro R | Macro F1 | Weighted F1 | Purpose |
-|---|---|---|---|---:|---:|---:|---:|---:|---|
-| E1 | Logistic Regression | TF-IDF (1,2), min_df=2, C=1, balanced | validation | 0.7312 | 0.6198 | 0.6871 | 0.6483 | 0.7360 | Baseline |
-| E2 | Linear SVM | TF-IDF (1,2), min_df=2, C=1, balanced | validation | 0.7502 | 0.6833 | 0.6635 | 0.6722 | 0.7487 | Comparison |
-| E3 | Linear SVM (tuned) | TF-IDF (1,2), min_df=1, C=0.5, balanced; CV macro F1 0.6356 | validation | 0.7681 | 0.7059 | 0.6886 | 0.6962 | 0.7665 | Best candidate |
-| E3-cal | E3 + sigmoid calibration | as E3, `CalibratedClassifierCV(cv=3)` | validation | 0.7705 | 0.7648 | 0.6418 | 0.6920 | 0.7636 | Deployable (real probabilities) |
-| **E3-final** | **E3-cal** | frozen configuration | **test** | **0.7668** | **0.7481** | **0.6238** | **0.6720** | **0.7562** | **Final model** |
-
-Grid for E3: both classifiers × ngram {(1,1),(1,2)} × min_df {1,2,5} × C {0.5,1,2}, giving 36 candidates and 108 fits in about 2 minutes on CPU.
-
-Per-class results of the final model on the test set:
-
+### Deployed model (DistilBERT) — test set, per class
 | Class | Precision | Recall | F1 | Support |
 |---|---:|---:|---:|---:|
-| joy | 0.8628 | 0.8575 | 0.8601 | 814 |
-| neutral | 0.7465 | 0.8897 | 0.8118 | 1,605 |
-| fear_anxiety | 0.6957 | 0.6000 | 0.6443 | 80 |
-| guilt | 0.7170 | 0.5672 | 0.6333 | 67 |
-| sadness | 0.7794 | 0.4953 | 0.6057 | 107 |
-| motivation | 0.7500 | 0.4943 | 0.5959 | 176 |
-| anger_frustration | 0.6855 | 0.4628 | 0.5525 | 551 |
+| joy | 0.840 | 0.926 | 0.881 | 814 |
+| neutral | 0.844 | 0.791 | 0.817 | 1,605 |
+| fear_anxiety | 0.643 | 0.788 | 0.708 | 80 |
+| guilt | 0.653 | 0.731 | 0.690 | 67 |
+| motivation | 0.609 | 0.733 | 0.665 | 176 |
+| anger_frustration | 0.682 | 0.632 | 0.656 | 551 |
+| sadness | 0.612 | 0.589 | 0.600 | 107 |
 
-Observations:
-- **Calibration trades recall for precision.** Macro precision went from 0.706 to 0.765 and recall from 0.689 to 0.642 on validation, with almost the same macro F1. The benefit is a real probability for the API.
-- **Minority classes are under-detected.** `sadness`, `motivation`, and `anger_frustration` have recall below 0.5 on test, while `neutral` recall is 0.89. The confusion matrices are in `reports/figures/confusion_matrix_final_test*.png`.
-- **Validation and test agree.** Test macro F1 (0.672) is close to validation (0.692), so the model generalizes.
-- **Weak spot outside the dataset's style:** "Just finished my run, feeling unstoppable" gets `neutral` at a confidence of 0.27. That is below the Node threshold of 0.4, so no emotion context is sent. This illustrates the domain gap between Reddit and journaling text.
+### Choosing the Node confidence threshold
+A wrong emotion in the prompt is worse than none. For DistilBERT on the test set, this is how often a non-neutral emotion
+would be sent, and how often it would be right:
 
-## API
+| `EMOTION_MIN_CONFIDENCE` | Messages that get context | Precision of that context |
+|---:|---:|---:|
+| 0.4 | 55% | 0.752 |
+| 0.5 | 51% | 0.778 |
+| **0.6 (recommended)** | 46% | 0.818 |
+| 0.7 | 42% | 0.856 |
+
+On the Mentor-domain sentences at 0.6, 49% of messages get context and 79% of those are correct.
+
+### Known weaknesses of the deployed model
+- **Situational anxiety.** "Presentation is tomorrow and my stomach is in knots" is often read as `neutral`.
+- **Self-directed negative states.** `guilt` gets confused with `anger_frustration` and `sadness`, for example "Forgot my daughter's recital. Worst dad ever."
+- **Emoji-heavy text** is right only about half the time on the domain set.
+
+## Test it locally
 ```bash
-make serve
+make predict                                            # guide's example sentences
+uv run --extra transformer python -m src.predict "I feel guilty I skipped my workout again"
+make serve                                              # API on 127.0.0.1:8001, docs at /docs
 curl -s -X POST localhost:8001/predict -H 'Content-Type: application/json' \
   -d '{"text":"I wasted the whole day and regret it."}'
+make domain-eval                                        # every error on the Mentor-style sentences
+make test                                               # data hygiene, leakage guard, API contract
 ```
-```json
-{"emotion":"guilt","confidence":0.6214,"probabilities":{"anger_frustration":0.0895,"fear_anxiety":0.0057,"guilt":0.6214,
- "joy":0.0588,"motivation":0.0256,"neutral":0.1556,"sadness":0.0433},"model_version":"v2-linear_svm_calibrated-20260914"}
-```
-- `GET /health` returns the status, model version, and classes.
-- Interactive docs are at `http://127.0.0.1:8001/docs`.
-- Empty text or text longer than 5,000 characters returns 422.
-- Set `MODEL_PATH` to serve a different model file.
+`/predict` returns `{emotion, confidence, probabilities, model_version}`. `/health` reports the loaded model. Empty text,
+or text longer than 5,000 characters, returns 422.
 
-Port 8001 is used because the Express API already uses 8000. To run the service in the background:
+To choose a model explicitly, set `MODEL_PATH`: `MODEL_PATH=models/emotion_classifier.joblib make serve`. Without it, the
+service loads DistilBERT when it has been trained and PyTorch is installed, and the TF-IDF model otherwise.
+
+Measured latency per message:
+
+| Model | Latency | Memory |
+|---|---|---|
+| DistilBERT, RTX 3050 | 4 ms | |
+| DistilBERT, CPU | 13 ms | about 1 GB RAM |
+| TF-IDF | 2 ms | |
+
+To run the service in the background:
 ```bash
 mkdir -p ~/.config/systemd/user && cp deploy/mentor-ml.service ~/.config/systemd/user/
 systemctl --user daemon-reload && systemctl --user enable --now mentor-ml
 ```
 
 ## Node.js integration (`~/Coding/JavaScript/mentor-ai/apps/api`)
-- `src/config/ml.config.ts`: the `EMOTION_*` environment settings, registered as `config('ml')`.
-- `src/services/emotion-classifier.service.ts`: calls `POST /predict` with a timeout, validates the response with Zod, and returns `null` on any failure or when confidence is below the threshold.
-- `src/services/chat-agent.service.ts`: classifies the user's message **concurrently** with building the system prompt, then appends a "Detected Emotional Signal (… not a diagnosis)" section when a result is available.
-- `.env.example`: add `EMOTION_CLASSIFIER_ENABLED=true` (off by default), `EMOTION_SERVICE_URL=http://127.0.0.1:8001`, `EMOTION_TIMEOUT_MS`, and `EMOTION_MIN_CONFIDENCE` to `apps/api/.env`.
+- `src/services/emotion-classifier.service.ts` calls `POST /predict` with a timeout and validates the response with Zod. It returns `null` on any failure or when confidence is below the threshold.
+- `src/services/chat-agent.service.ts` classifies the message **concurrently** with building the system prompt, then appends a "Detected Emotional Signal (… not a diagnosis)" section.
+- `src/config/ml.config.ts` holds the settings. Enable it in `apps/api/.env`:
+  ```
+  EMOTION_CLASSIFIER_ENABLED=true
+  EMOTION_SERVICE_URL=http://127.0.0.1:8001
+  EMOTION_MIN_CONFIDENCE=0.6
+  ```
 
-**Not yet verified:** the backend was not typechecked or run end to end, because its dependencies were not installed. To verify:
+**Not yet verified:** the backend has not been typechecked or run end to end, because its dependencies are not installed.
+To verify:
 1. Run `pnpm install && pnpm --filter @mentor-ai/api typecheck`.
-2. Start the API with `pnpm --filter @mentor-ai/api dev` and send a chat message.
-3. Check the log for `Emotion classified`.
-4. Stop FastAPI and confirm the chat still streams a reply.
+2. With `make serve` running, start `pnpm --filter @mentor-ai/api dev` and send a chat message.
+3. Check the API log for `Emotion classified`.
+4. Stop FastAPI and confirm the chat still replies.
+
+## Data and labels
+- **Dataset:** GoEmotions (CC BY 4.0), mapped to 7 classes. Only examples whose labels all map to one class are kept, giving 26,947 train, 3,359 validation and 3,400 test examples.
+- **Merged class:** `anger` and `frustration` were merged into `anger_frustration`, because `frustration` had a validation F1 of only 0.27–0.29.
+- **Details:** `data/label_mapping.md` and `data/README.md`.
 
 ## Limitations
-- **Domain shift:** GoEmotions is Reddit comments, while Mentor AI receives journal entries and check-ins.
-- **Label noise:** crowd-sourced labels, with many short, ambiguous texts.
-- **Mixed emotions:** single-class filtering removes about 37% of raw rows, so mixed-emotion text is under-represented.
-- **Approximate classes:** `guilt` (remorse + embarrassment) and `motivation` (optimism + desire + pride).
+- **Domain shift:** the training data is Reddit comments, while users write journal entries and check-ins.
+- **Label noise:** crowd-sourced annotations.
+- **Approximate classes:** `guilt` and `motivation` are approximations of the intended emotions.
 - **Small test support:** `fear_anxiety` (80) and `guilt` (67) have wide uncertainty.
-- **Bag-of-words limits:** TF-IDF ignores word order and context, for example sarcasm and negation scope.
+- **Unreviewed domain set:** the Mentor-domain labels are not yet human-reviewed.
 
 ## Future work
-- Fine-tune DistilBERT on the RTX 3050 (6 GB) against the same frozen splits.
-- Collect a small labeled dataset of real (consented, anonymized) Mentor AI check-ins.
-- Add emotion context to voice sessions, and store per-message emotions for trend insights.
+1. Review and extend the domain set with consented, anonymised real check-ins, and fine-tune on part of it.
+2. Add voice-session support.
+3. Store per-message emotion trends.
 
 ## Definition of Done (guide §23)
-- [x] Dataset and label mapping documented (`data/README.md`, `data/label_mapping.md`)
-- [x] Training is reproducible (`make all`, fixed seed, split hashes verified identical across reruns)
-- [x] At least two models compared (E1 LogReg, E2 LinearSVM, E3 tuned)
-- [x] Test set protected until final evaluation (single run, guarded)
+- [x] Dataset and label mapping documented
+- [x] Training reproducible (`make all` / `make transformer`, fixed seed, split hashes verified identical across rebuilds)
+- [x] At least two models compared (E1–E3 on two feature sets, E4 DistilBERT)
+- [x] Test set protected (one guarded, logged evaluation per model version)
 - [x] Metrics and confusion matrices saved (`reports/`)
-- [x] Final model serialized (`models/emotion_classifier.joblib` + `model_card.json`)
-- [x] Local prediction API working (pytest: 13 passed; live curl checks)
+- [x] Final model serialized (`models/distilbert/`, fallback `models/emotion_classifier.joblib`, both with model cards)
+- [x] Local prediction API working (tests and live checks pass)
 - [ ] Node.js integration working (code written; typecheck and live run pending)
-- [ ] Mentor AI receives emotion context (pending the live run above)
-- [x] Actual measured results and limitations documented (this file)
+- [ ] Mentor AI receives emotion context (pending that live run)
+- [x] Measured results and limitations documented (this file + PDF report)

@@ -134,8 +134,14 @@ def main() -> None:
                                    "macro P": f["metrics"]["macro_precision"], "macro R": f["metrics"]["macro_recall"],
                                    "macro F1": f["metrics"]["macro_f1"], "weighted F1": f["metrics"]["weighted_f1"],
                                    "ECE": (f.get("calibration") or {}).get("ece")} for f in finals])
-    deployed = card["model_version"]
+    deployed_card = tcard if tcard else card
+    deployed = deployed_card["model_version"]
     deployed_final = next(f for f in finals if f["model_version"] == deployed)
+    deployed_desc = (
+        "DistilBERT (<code>distilbert-base-uncased</code>) fine-tuned on the frozen GoEmotions splits, temperature-calibrated"
+        if tcard else "TF-IDF (word + character n-grams) + linear SVM with isotonic calibration"
+    )
+    latency = read_json(config.METRICS / "latency.json")["models"]
     best_test = max(finals, key=lambda f: f["metrics"]["macro_f1"])
 
     # ---------- domain
@@ -143,7 +149,25 @@ def main() -> None:
                                     **{f"acc ({k})": v["accuracy"] for k, v in d["accuracy_by_kind"].items()},
                                     "wrong emotion sent @0.6": sum(1 for p in d["predictions"] if p["pred"] != "neutral" and p["pred"] != p["label"] and (p["confidence"] or 0) >= 0.6)}
                                    for d in domain_evals])
-    latest_domain = domain_evals[-1] if domain_evals else None
+    latest_domain = next((d for d in domain_evals if d["model_version"] == deployed), domain_evals[-1] if domain_evals else None)
+
+    # ---------- model selection (validation + domain decide; test only confirms)
+    def val_f1(version: str) -> float | None:
+        if "distilbert" in version:
+            return tcard["validation_metrics"]["macro_f1"] if tcard else None
+        key = "E3-iso / fs2" if "fs2" in version else "E3-cal / fs1"
+        return val_runs[key]["metrics"]["macro_f1"] if key in val_runs else None
+
+    names = {"v2-linear_svm_calibrated-20260914": "TF-IDF fs1 + SVM (sigmoid)",
+             "v2-fs2-linear_svm_calibrated-20260914": "TF-IDF fs2 + SVM (isotonic)",
+             "v2-distilbert-20260914": "DistilBERT (temperature)"}
+    selection = pd.DataFrame([{
+        "model": names.get(f["model_version"], f["model_version"]),
+        "validation macro F1": val_f1(f["model_version"]),
+        "Mentor-domain macro F1": next((d["metrics"]["macro_f1"] for d in domain_evals if d["model_version"] == f["model_version"]), None),
+        "test macro F1": f["metrics"]["macro_f1"],
+        "test ECE": (f.get("calibration") or {}).get("ece"),
+    } for f in finals])
     domain_per_class = pd.DataFrame({d["model_version"]: {c: d["metrics"]["per_class"][c]["f1-score"] for c in classes} for d in domain_evals}).reset_index().rename(columns={"index": "class"})
     domain_examples = ""
     if latest_domain:
@@ -193,7 +217,7 @@ This project adds a <b>supervised emotion classifier</b> that reads the user's m
 calibrated confidence. The label is passed to the LLM as structured context so the mentor can adapt its tone. It is emotion classification of
 text, <b>not a medical or psychological diagnosis</b>, and the LLM remains responsible for the final response.</p>
 <div class="box"><b>Headline results (all measured, none estimated).</b><br>
-Deployed model: TF-IDF (word + character n-grams) + linear SVM with isotonic calibration.<br>
+Deployed model: {deployed_desc}.<br>
 GoEmotions test set (used once per model version): accuracy <b>{deployed_final['metrics']['accuracy']:.3f}</b>, macro F1 <b>{deployed_final['metrics']['macro_f1']:.3f}</b>,
 weighted F1 {deployed_final['metrics']['weighted_f1']:.3f}, expected calibration error {deployed_final['calibration']['ece']:.3f}.<br>
 Mentor-domain check-in sentences ({latest_domain['n'] if latest_domain else 0} items{'' if reviewed else ', draft labels'}): accuracy
@@ -298,7 +322,7 @@ configuration was then frozen and checked once on validation. Top fs2 candidates
 SVM is wrapped in <code>CalibratedClassifierCV</code>. Four options were compared on validation: sigmoid (Platt) vs isotonic, and an
 ensemble of three fold-models vs a single full-data model. Sigmoid/ensemble — the common default — lost ~2 points of macro F1 because it
 shifts decisions towards the majority class; isotonic on a single full-data model kept the SVM's macro F1 (0.711 vs 0.715) and had the lowest
-expected calibration error (0.027). It is the deployed choice.</p>
+expected calibration error (0.027). It is used for the TF-IDF model, which serves as the fallback.</p>
 {transformer_html}
 <h3>6.6 Experiment log (validation unless marked test)</h3>
 {table(exp_view[exp_cols])}
@@ -317,7 +341,7 @@ Versions were <em>not</em> selected by their test score.</p>
 {table(per_class_table(deployed_final['metrics']['per_class'], classes))}
 <div class="two">{img(config.FIGURES / f"confusion_matrix_final_test_{deployed}.png", f"Figure 4. Test confusion matrix (counts), {deployed}.")}
 {img(config.FIGURES / f"confusion_matrix_final_test_{deployed}_normalized.png", "Figure 5. Row-normalised: share of each true class predicted as each label.")}</div>
-<p>Reading the matrix: <code>joy</code> and <code>neutral</code> are recognised well; the minority classes are under-detected, with most
+<p>Reading the matrix: <code>joy</code> and <code>neutral</code> are recognised well; the largest confusions are between <code>anger_frustration</code> and <code>neutral</code> in both directions, with most other
 misses going to <code>neutral</code>. Because the app sends context only for confident non-neutral predictions, a miss usually means
 "no context" (harmless) rather than a wrong emotion.</p>
 <h3>7.3 Confidence calibration and the Node threshold</h3>
@@ -333,12 +357,23 @@ evaluation only, never for training or tuning.</p>
 {table(domain_summary, "{:.3f}")}
 {table(domain_per_class)}
 {img(config.FIGURES / "domain_eval_comparison.png", "Figure 6. Mentor-domain evaluation per model version.")}
-<p>Typical errors of the latest model on this set (first 20):</p>
+<p>Typical errors of the deployed model on this set (first 20):</p>
 {domain_examples}
-<p>The pattern is consistent: sentences that express an emotion through a <em>situation</em> ("stomach in knots", "skipped my workout
-again") rather than an explicit emotion word are classified as neutral, and negation ("I'm not happy") is not understood by a bag-of-words
-model. These are limits of the training data's domain and of TF-IDF, not bugs — and they are exactly what the transformer phase and
-domain-specific data address.</p>
+<p>For the TF-IDF models the pattern was consistent: sentences that express an emotion through a <em>situation</em> ("stomach in knots",
+"skipped my workout again") rather than an explicit emotion word were classified as neutral, and negation was not understood. DistilBERT,
+which reads words in context, removes a large part of this gap. Its remaining errors are concentrated in two places: situational anxiety
+(exam or presentation worries) still often reads as neutral, and <code>guilt</code> is confused with <code>anger_frustration</code> and
+<code>sadness</code> — all three are self-directed negative states that GoEmotions' Reddit data rarely separates the way a journal does.
+Domain-specific training data is the remedy for both.</p>
+
+<h3>7.5 Model selection</h3>
+<p>The deployed model was chosen on <b>validation macro F1</b> and the <b>Mentor-domain set</b>, never on test scores; each test
+evaluation was run once, after its model was frozen, to confirm the choice. All three signals agree:</p>
+{table(selection, "{:.3f}")}
+<p>DistilBERT is deployed: it is the best model on every measure, it is the best-calibrated (lowest ECE), and it serves in
+{latency['v2-distilbert-20260914']['gpu']['single_text_ms']} ms per message on the RTX 3050 or
+{latency['v2-distilbert-20260914']['cpu']['single_text_ms']} ms on CPU — far below the Node service's 1.5 s timeout. The TF-IDF model
+remains in the repository as an automatic fallback when PyTorch or the transformer weights are not available.</p>
 """)
 
     parts.append(sec("8. Deployment and integration"))
@@ -346,7 +381,7 @@ domain-specific data address.</p>
 <p><b>Model service</b> (<code>app/main.py</code>, FastAPI/uvicorn on 127.0.0.1:8001): loads the serialised pipeline once at start-up;
 <code>POST /predict {"text"}</code> returns <code>{emotion, confidence, probabilities, model_version}</code>; empty or over-long text is
 rejected with 422; <code>GET /health</code> reports the model version and classes; interactive docs at <code>/docs</code>. A systemd user unit
-is provided. Latency of the classical model is ~2 ms per message on CPU.</p>
+is provided. Measured latency per message: @@LATENCY@@.</p>
 <p><b>Node.js integration</b> (Mentor AI API, TypeScript): a new <code>EmotionClassifierService</code> calls the service with a 1.5 s timeout,
 validates the JSON with Zod and returns <code>null</code> on any failure or low confidence. <code>ChatAgentService</code> runs the classification
 <em>concurrently</em> with building the system prompt, so no latency is added, then appends a short "Detected Emotional Signal" section that
@@ -393,14 +428,20 @@ uv run python -m src.report   # this document</pre>""")
 <li>At least two models compared — E1, E2, E3{", E4" if tcard else ""} on identical splits</li>
 <li>Test set protected — loaded only by <code>evaluate.py</code>; one run per model version; guard and log for re-runs</li>
 <li>Metrics and confusion matrices saved — <code>reports/metrics/</code>, <code>reports/figures/</code></li>
-<li>Final model serialised — <code>models/emotion_classifier.joblib</code> + <code>model_card.json</code></li>
+<li>Final model serialised — <code>models/distilbert/</code> (deployed) and <code>models/emotion_classifier.joblib</code> (fallback), each with <code>model_card.json</code></li>
 <li>Local prediction API working — FastAPI, tests pass</li>
 <li>Node.js integration — implemented behind a feature flag{"; live end-to-end run pending" if True else ""}</li>
 <li>Actual measured results and limitations — this report</li>
 </ul>
 <p class="small">Generated by <code>src/report.py</code> on {now:%Y-%m-%d %H:%M} UTC. Experiment rows: {len(experiments)}; test evaluations: {len(finals)}.</p>""")
 
-    OUT_HTML.write_text("\n".join(parts))
+    tf_lat = latency["v2-distilbert-20260914"]
+    latency_text = (
+        f"DistilBERT {tf_lat['gpu']['single_text_ms']} ms on GPU / {tf_lat['cpu']['single_text_ms']} ms on CPU "
+        f"(about {tf_lat['cpu']['max_rss_mb'] / 1024:.1f} GB RAM); TF-IDF fallback "
+        f"{latency['v2-fs2-linear_svm_calibrated-20260914']['single_text_ms']} ms on CPU"
+    )
+    OUT_HTML.write_text("\n".join(parts).replace("@@LATENCY@@", latency_text))
     chrome = shutil.which("google-chrome") or shutil.which("chromium")
     if chrome:
         subprocess.run([chrome, "--headless=new", "--disable-gpu", "--no-pdf-header-footer",

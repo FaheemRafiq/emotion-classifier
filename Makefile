@@ -15,14 +15,16 @@ tune:
 evaluate:
 	uv run python -m src.evaluate
 
+# predict/serve/test use the `transformer` extra so the deployed DistilBERT model can load
+# (they fall back to the TF-IDF joblib model when models/distilbert is absent).
 predict:
-	uv run python -m src.predict
+	uv run --extra transformer python -m src.predict
 
 serve:
-	uv run uvicorn app.main:app --host 127.0.0.1 --port 8001
+	uv run --extra transformer uvicorn app.main:app --host 127.0.0.1 --port 8001
 
 test:
-	uv run pytest -q
+	uv run --extra transformer pytest -q
 
 # Exact training order (guide §21): data -> baselines -> tuning -> single test evaluation -> tests
 all: data train tune evaluate test

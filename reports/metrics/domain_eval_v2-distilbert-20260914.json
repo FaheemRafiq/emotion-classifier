@@ -1,0 +1,1053 @@
+{
+  "model_version": "v2-distilbert-20260914",
+  "labels_reviewed": false,
+  "n": 154,
+  "metrics": {
+    "accuracy": 0.5909090909090909,
+    "macro_precision": 0.7168847025989882,
+    "macro_recall": 0.5909090909090908,
+    "macro_f1": 0.6020299145299146,
+    "weighted_f1": 0.6020299145299146,
+    "per_class": {
+      "joy": {
+        "precision": 0.9285714285714286,
+        "recall": 0.5909090909090909,
+        "f1-score": 0.7222222222222222,
+        "support": 22.0
+      },
+      "sadness": {
+        "precision": 0.5555555555555556,
+        "recall": 0.45454545454545453,
+        "f1-score": 0.5,
+        "support": 22.0
+      },
+      "fear_anxiety": {
+        "precision": 1.0,
+        "recall": 0.45454545454545453,
+        "f1-score": 0.625,
+        "support": 22.0
+      },
+      "anger_frustration": {
+        "precision": 0.5769230769230769,
+        "recall": 0.6818181818181818,
+        "f1-score": 0.625,
+        "support": 22.0
+      },
+      "guilt": {
+        "precision": 0.9,
+        "recall": 0.4090909090909091,
+        "f1-score": 0.5625,
+        "support": 22.0
+      },
+      "motivation": {
+        "precision": 0.7,
+        "recall": 0.6363636363636364,
+        "f1-score": 0.6666666666666666,
+        "support": 22.0
+      },
+      "neutral": {
+        "precision": 0.35714285714285715,
+        "recall": 0.9090909090909091,
+        "f1-score": 0.5128205128205128,
+        "support": 22.0
+      },
+      "accuracy": 0.5909090909090909,
+      "macro avg": {
+        "precision": 0.7168847025989882,
+        "recall": 0.5909090909090908,
+        "f1-score": 0.6020299145299146,
+        "support": 154.0
+      },
+      "weighted avg": {
+        "precision": 0.7168847025989883,
+        "recall": 0.5909090909090909,
+        "f1-score": 0.6020299145299146,
+        "support": 154.0
+      }
+    }
+  },
+  "accuracy_by_kind": {
+    "emoji": {
+      "accuracy": 0.5,
+      "n": 8
+    },
+    "negation": {
+      "accuracy": 0.6,
+      "n": 10
+    },
+    "plain": {
+      "accuracy": 0.5891472868217055,
+      "n": 129
+    },
+    "short": {
+      "accuracy": 0.7142857142857143,
+      "n": 7
+    }
+  },
+  "calibration": {
+    "ece": 0.21987675091662964,
+    "thresholds": [
+      {
+        "threshold": 0.0,
+        "coverage": 1.0,
+        "accuracy_at_threshold": 0.5909090909090909,
+        "non_neutral_sent": 0.6363636363636364,
+        "non_neutral_precision": 0.7244897959183674
+      },
+      {
+        "threshold": 0.4,
+        "coverage": 0.9545454545454546,
+        "accuracy_at_threshold": 0.5782312925170068,
+        "non_neutral_sent": 0.5909090909090909,
+        "non_neutral_precision": 0.7142857142857143
+      },
+      {
+        "threshold": 0.5,
+        "coverage": 0.9090909090909091,
+        "accuracy_at_threshold": 0.5928571428571429,
+        "non_neutral_sent": 0.5714285714285714,
+        "non_neutral_precision": 0.7272727272727273
+      },
+      {
+        "threshold": 0.6,
+        "coverage": 0.7662337662337663,
+        "accuracy_at_threshold": 0.652542372881356,
+        "non_neutral_sent": 0.487012987012987,
+        "non_neutral_precision": 0.7866666666666666
+      },
+      {
+        "threshold": 0.7,
+        "coverage": 0.6428571428571429,
+        "accuracy_at_threshold": 0.7272727272727273,
+        "non_neutral_sent": 0.4155844155844156,
+        "non_neutral_precision": 0.84375
+      }
+    ]
+  },
+  "predictions": [
+    {
+      "id": "J01",
+      "label": "joy",
+      "pred": "neutral",
+      "confidence": 0.7531175017356873
+    },
+    {
+      "id": "J02",
+      "label": "joy",
+      "pred": "joy",
+      "confidence": 0.8924219012260437
+    },
+    {
+      "id": "J03",
+      "label": "joy",
+      "pred": "joy",
+      "confidence": 0.7233936190605164
+    },
+    {
+      "id": "J04",
+      "label": "joy",
+      "pred": "neutral",
+      "confidence": 0.574342668056488
+    },
+    {
+      "id": "J05",
+      "label": "joy",
+      "pred": "neutral",
+      "confidence": 0.48544567823410034
+    },
+    {
+      "id": "J06",
+      "label": "joy",
+      "pred": "joy",
+      "confidence": 0.7536950707435608
+    },
+    {
+      "id": "J07",
+      "label": "joy",
+      "pred": "neutral",
+      "confidence": 0.738516092300415
+    },
+    {
+      "id": "J08",
+      "label": "joy",
+      "pred": "neutral",
+      "confidence": 0.8493879437446594
+    },
+    {
+      "id": "J09",
+      "label": "joy",
+      "pred": "joy",
+      "confidence": 0.9671568870544434
+    },
+    {
+      "id": "J10",
+      "label": "joy",
+      "pred": "motivation",
+      "confidence": 0.5780764818191528
+    },
+    {
+      "id": "J11",
+      "label": "joy",
+      "pred": "joy",
+      "confidence": 0.9406296610832214
+    },
+    {
+      "id": "J12",
+      "label": "joy",
+      "pred": "joy",
+      "confidence": 0.8869568109512329
+    },
+    {
+      "id": "J13",
+      "label": "joy",
+      "pred": "motivation",
+      "confidence": 0.8463878035545349
+    },
+    {
+      "id": "J14",
+      "label": "joy",
+      "pred": "joy",
+      "confidence": 0.9639598727226257
+    },
+    {
+      "id": "J15",
+      "label": "joy",
+      "pred": "joy",
+      "confidence": 0.930277407169342
+    },
+    {
+      "id": "J16",
+      "label": "joy",
+      "pred": "joy",
+      "confidence": 0.9380340576171875
+    },
+    {
+      "id": "J17",
+      "label": "joy",
+      "pred": "joy",
+      "confidence": 0.9386934638023376
+    },
+    {
+      "id": "J18",
+      "label": "joy",
+      "pred": "neutral",
+      "confidence": 0.6046068668365479
+    },
+    {
+      "id": "J19",
+      "label": "joy",
+      "pred": "joy",
+      "confidence": 0.9740084409713745
+    },
+    {
+      "id": "J20",
+      "label": "joy",
+      "pred": "joy",
+      "confidence": 0.795886218547821
+    },
+    {
+      "id": "J21",
+      "label": "joy",
+      "pred": "neutral",
+      "confidence": 0.9005098938941956
+    },
+    {
+      "id": "J22",
+      "label": "joy",
+      "pred": "joy",
+      "confidence": 0.8930633068084717
+    },
+    {
+      "id": "S01",
+      "label": "sadness",
+      "pred": "sadness",
+      "confidence": 0.9050442576408386
+    },
+    {
+      "id": "S02",
+      "label": "sadness",
+      "pred": "anger_frustration",
+      "confidence": 0.7039324641227722
+    },
+    {
+      "id": "S03",
+      "label": "sadness",
+      "pred": "neutral",
+      "confidence": 0.7853771448135376
+    },
+    {
+      "id": "S04",
+      "label": "sadness",
+      "pred": "neutral",
+      "confidence": 0.6972810626029968
+    },
+    {
+      "id": "S05",
+      "label": "sadness",
+      "pred": "sadness",
+      "confidence": 0.6105250716209412
+    },
+    {
+      "id": "S06",
+      "label": "sadness",
+      "pred": "sadness",
+      "confidence": 0.7712574005126953
+    },
+    {
+      "id": "S07",
+      "label": "sadness",
+      "pred": "anger_frustration",
+      "confidence": 0.7057029604911804
+    },
+    {
+      "id": "S08",
+      "label": "sadness",
+      "pred": "sadness",
+      "confidence": 0.9341805577278137
+    },
+    {
+      "id": "S09",
+      "label": "sadness",
+      "pred": "sadness",
+      "confidence": 0.5215646624565125
+    },
+    {
+      "id": "S10",
+      "label": "sadness",
+      "pred": "sadness",
+      "confidence": 0.30505794286727905
+    },
+    {
+      "id": "S11",
+      "label": "sadness",
+      "pred": "neutral",
+      "confidence": 0.6082289814949036
+    },
+    {
+      "id": "S12",
+      "label": "sadness",
+      "pred": "motivation",
+      "confidence": 0.5378583073616028
+    },
+    {
+      "id": "S13",
+      "label": "sadness",
+      "pred": "sadness",
+      "confidence": 0.3689895272254944
+    },
+    {
+      "id": "S14",
+      "label": "sadness",
+      "pred": "neutral",
+      "confidence": 0.5300434827804565
+    },
+    {
+      "id": "S15",
+      "label": "sadness",
+      "pred": "neutral",
+      "confidence": 0.9376917481422424
+    },
+    {
+      "id": "S16",
+      "label": "sadness",
+      "pred": "neutral",
+      "confidence": 0.6965413689613342
+    },
+    {
+      "id": "S17",
+      "label": "sadness",
+      "pred": "sadness",
+      "confidence": 0.9238060712814331
+    },
+    {
+      "id": "S18",
+      "label": "sadness",
+      "pred": "sadness",
+      "confidence": 0.9288890957832336
+    },
+    {
+      "id": "S19",
+      "label": "sadness",
+      "pred": "neutral",
+      "confidence": 0.5644245147705078
+    },
+    {
+      "id": "S20",
+      "label": "sadness",
+      "pred": "neutral",
+      "confidence": 0.7155938744544983
+    },
+    {
+      "id": "S21",
+      "label": "sadness",
+      "pred": "anger_frustration",
+      "confidence": 0.595743715763092
+    },
+    {
+      "id": "S22",
+      "label": "sadness",
+      "pred": "sadness",
+      "confidence": 0.3336443305015564
+    },
+    {
+      "id": "F01",
+      "label": "fear_anxiety",
+      "pred": "neutral",
+      "confidence": 0.46543508768081665
+    },
+    {
+      "id": "F02",
+      "label": "fear_anxiety",
+      "pred": "neutral",
+      "confidence": 0.6593818068504333
+    },
+    {
+      "id": "F03",
+      "label": "fear_anxiety",
+      "pred": "fear_anxiety",
+      "confidence": 0.9488989114761353
+    },
+    {
+      "id": "F04",
+      "label": "fear_anxiety",
+      "pred": "neutral",
+      "confidence": 0.5006974339485168
+    },
+    {
+      "id": "F05",
+      "label": "fear_anxiety",
+      "pred": "neutral",
+      "confidence": 0.6167845726013184
+    },
+    {
+      "id": "F06",
+      "label": "fear_anxiety",
+      "pred": "fear_anxiety",
+      "confidence": 0.9200305938720703
+    },
+    {
+      "id": "F07",
+      "label": "fear_anxiety",
+      "pred": "neutral",
+      "confidence": 0.5645332336425781
+    },
+    {
+      "id": "F08",
+      "label": "fear_anxiety",
+      "pred": "fear_anxiety",
+      "confidence": 0.8848744630813599
+    },
+    {
+      "id": "F09",
+      "label": "fear_anxiety",
+      "pred": "fear_anxiety",
+      "confidence": 0.9442060589790344
+    },
+    {
+      "id": "F10",
+      "label": "fear_anxiety",
+      "pred": "fear_anxiety",
+      "confidence": 0.9155793190002441
+    },
+    {
+      "id": "F11",
+      "label": "fear_anxiety",
+      "pred": "neutral",
+      "confidence": 0.47099366784095764
+    },
+    {
+      "id": "F12",
+      "label": "fear_anxiety",
+      "pred": "sadness",
+      "confidence": 0.34317588806152344
+    },
+    {
+      "id": "F13",
+      "label": "fear_anxiety",
+      "pred": "fear_anxiety",
+      "confidence": 0.8499530553817749
+    },
+    {
+      "id": "F14",
+      "label": "fear_anxiety",
+      "pred": "fear_anxiety",
+      "confidence": 0.9450781345367432
+    },
+    {
+      "id": "F15",
+      "label": "fear_anxiety",
+      "pred": "anger_frustration",
+      "confidence": 0.5209950804710388
+    },
+    {
+      "id": "F16",
+      "label": "fear_anxiety",
+      "pred": "fear_anxiety",
+      "confidence": 0.9448202252388
+    },
+    {
+      "id": "F17",
+      "label": "fear_anxiety",
+      "pred": "fear_anxiety",
+      "confidence": 0.9226780533790588
+    },
+    {
+      "id": "F18",
+      "label": "fear_anxiety",
+      "pred": "sadness",
+      "confidence": 0.5769988298416138
+    },
+    {
+      "id": "F19",
+      "label": "fear_anxiety",
+      "pred": "neutral",
+      "confidence": 0.867910623550415
+    },
+    {
+      "id": "F20",
+      "label": "fear_anxiety",
+      "pred": "fear_anxiety",
+      "confidence": 0.8889538645744324
+    },
+    {
+      "id": "F21",
+      "label": "fear_anxiety",
+      "pred": "neutral",
+      "confidence": 0.5881748199462891
+    },
+    {
+      "id": "F22",
+      "label": "fear_anxiety",
+      "pred": "neutral",
+      "confidence": 0.8546845316886902
+    },
+    {
+      "id": "A01",
+      "label": "anger_frustration",
+      "pred": "anger_frustration",
+      "confidence": 0.6555633544921875
+    },
+    {
+      "id": "A02",
+      "label": "anger_frustration",
+      "pred": "sadness",
+      "confidence": 0.4763883948326111
+    },
+    {
+      "id": "A03",
+      "label": "anger_frustration",
+      "pred": "anger_frustration",
+      "confidence": 0.9208322763442993
+    },
+    {
+      "id": "A04",
+      "label": "anger_frustration",
+      "pred": "anger_frustration",
+      "confidence": 0.5712922215461731
+    },
+    {
+      "id": "A05",
+      "label": "anger_frustration",
+      "pred": "neutral",
+      "confidence": 0.584389865398407
+    },
+    {
+      "id": "A06",
+      "label": "anger_frustration",
+      "pred": "sadness",
+      "confidence": 0.6628926992416382
+    },
+    {
+      "id": "A07",
+      "label": "anger_frustration",
+      "pred": "anger_frustration",
+      "confidence": 0.9158867597579956
+    },
+    {
+      "id": "A08",
+      "label": "anger_frustration",
+      "pred": "guilt",
+      "confidence": 0.610089123249054
+    },
+    {
+      "id": "A09",
+      "label": "anger_frustration",
+      "pred": "anger_frustration",
+      "confidence": 0.8127774000167847
+    },
+    {
+      "id": "A10",
+      "label": "anger_frustration",
+      "pred": "anger_frustration",
+      "confidence": 0.4056740701198578
+    },
+    {
+      "id": "A11",
+      "label": "anger_frustration",
+      "pred": "anger_frustration",
+      "confidence": 0.36055055260658264
+    },
+    {
+      "id": "A12",
+      "label": "anger_frustration",
+      "pred": "anger_frustration",
+      "confidence": 0.5688718557357788
+    },
+    {
+      "id": "A13",
+      "label": "anger_frustration",
+      "pred": "neutral",
+      "confidence": 0.7119474411010742
+    },
+    {
+      "id": "A14",
+      "label": "anger_frustration",
+      "pred": "anger_frustration",
+      "confidence": 0.8673919439315796
+    },
+    {
+      "id": "A15",
+      "label": "anger_frustration",
+      "pred": "anger_frustration",
+      "confidence": 0.9389978051185608
+    },
+    {
+      "id": "A16",
+      "label": "anger_frustration",
+      "pred": "anger_frustration",
+      "confidence": 0.6867697238922119
+    },
+    {
+      "id": "A17",
+      "label": "anger_frustration",
+      "pred": "anger_frustration",
+      "confidence": 0.759479284286499
+    },
+    {
+      "id": "A18",
+      "label": "anger_frustration",
+      "pred": "anger_frustration",
+      "confidence": 0.902925431728363
+    },
+    {
+      "id": "A19",
+      "label": "anger_frustration",
+      "pred": "neutral",
+      "confidence": 0.7163017392158508
+    },
+    {
+      "id": "A20",
+      "label": "anger_frustration",
+      "pred": "anger_frustration",
+      "confidence": 0.749415934085846
+    },
+    {
+      "id": "A21",
+      "label": "anger_frustration",
+      "pred": "anger_frustration",
+      "confidence": 0.7349188327789307
+    },
+    {
+      "id": "A22",
+      "label": "anger_frustration",
+      "pred": "neutral",
+      "confidence": 0.7937939167022705
+    },
+    {
+      "id": "G01",
+      "label": "guilt",
+      "pred": "anger_frustration",
+      "confidence": 0.5575996041297913
+    },
+    {
+      "id": "G02",
+      "label": "guilt",
+      "pred": "guilt",
+      "confidence": 0.8740511536598206
+    },
+    {
+      "id": "G03",
+      "label": "guilt",
+      "pred": "anger_frustration",
+      "confidence": 0.8203699588775635
+    },
+    {
+      "id": "G04",
+      "label": "guilt",
+      "pred": "anger_frustration",
+      "confidence": 0.45055636763572693
+    },
+    {
+      "id": "G05",
+      "label": "guilt",
+      "pred": "guilt",
+      "confidence": 0.9257628917694092
+    },
+    {
+      "id": "G06",
+      "label": "guilt",
+      "pred": "neutral",
+      "confidence": 0.6436838507652283
+    },
+    {
+      "id": "G07",
+      "label": "guilt",
+      "pred": "sadness",
+      "confidence": 0.6000860929489136
+    },
+    {
+      "id": "G08",
+      "label": "guilt",
+      "pred": "guilt",
+      "confidence": 0.9304439425468445
+    },
+    {
+      "id": "G09",
+      "label": "guilt",
+      "pred": "anger_frustration",
+      "confidence": 0.8818607926368713
+    },
+    {
+      "id": "G10",
+      "label": "guilt",
+      "pred": "sadness",
+      "confidence": 0.7124815583229065
+    },
+    {
+      "id": "G11",
+      "label": "guilt",
+      "pred": "guilt",
+      "confidence": 0.8818823099136353
+    },
+    {
+      "id": "G12",
+      "label": "guilt",
+      "pred": "anger_frustration",
+      "confidence": 0.7183094024658203
+    },
+    {
+      "id": "G13",
+      "label": "guilt",
+      "pred": "neutral",
+      "confidence": 0.8483827114105225
+    },
+    {
+      "id": "G14",
+      "label": "guilt",
+      "pred": "guilt",
+      "confidence": 0.9125325679779053
+    },
+    {
+      "id": "G15",
+      "label": "guilt",
+      "pred": "guilt",
+      "confidence": 0.9188359379768372
+    },
+    {
+      "id": "G16",
+      "label": "guilt",
+      "pred": "sadness",
+      "confidence": 0.6118938326835632
+    },
+    {
+      "id": "G17",
+      "label": "guilt",
+      "pred": "guilt",
+      "confidence": 0.36086440086364746
+    },
+    {
+      "id": "G18",
+      "label": "guilt",
+      "pred": "anger_frustration",
+      "confidence": 0.6324412226676941
+    },
+    {
+      "id": "G19",
+      "label": "guilt",
+      "pred": "sadness",
+      "confidence": 0.6588171720504761
+    },
+    {
+      "id": "G20",
+      "label": "guilt",
+      "pred": "guilt",
+      "confidence": 0.8999123573303223
+    },
+    {
+      "id": "G21",
+      "label": "guilt",
+      "pred": "motivation",
+      "confidence": 0.7183007597923279
+    },
+    {
+      "id": "G22",
+      "label": "guilt",
+      "pred": "guilt",
+      "confidence": 0.6756617426872253
+    },
+    {
+      "id": "M01",
+      "label": "motivation",
+      "pred": "motivation",
+      "confidence": 0.32619985938072205
+    },
+    {
+      "id": "M02",
+      "label": "motivation",
+      "pred": "motivation",
+      "confidence": 0.953663170337677
+    },
+    {
+      "id": "M03",
+      "label": "motivation",
+      "pred": "neutral",
+      "confidence": 0.6203365921974182
+    },
+    {
+      "id": "M04",
+      "label": "motivation",
+      "pred": "motivation",
+      "confidence": 0.6738446354866028
+    },
+    {
+      "id": "M05",
+      "label": "motivation",
+      "pred": "neutral",
+      "confidence": 0.7949292659759521
+    },
+    {
+      "id": "M06",
+      "label": "motivation",
+      "pred": "motivation",
+      "confidence": 0.8227949738502502
+    },
+    {
+      "id": "M07",
+      "label": "motivation",
+      "pred": "motivation",
+      "confidence": 0.7067868113517761
+    },
+    {
+      "id": "M08",
+      "label": "motivation",
+      "pred": "motivation",
+      "confidence": 0.8943081498146057
+    },
+    {
+      "id": "M09",
+      "label": "motivation",
+      "pred": "motivation",
+      "confidence": 0.9299596548080444
+    },
+    {
+      "id": "M10",
+      "label": "motivation",
+      "pred": "joy",
+      "confidence": 0.8537408113479614
+    },
+    {
+      "id": "M11",
+      "label": "motivation",
+      "pred": "neutral",
+      "confidence": 0.8155723214149475
+    },
+    {
+      "id": "M12",
+      "label": "motivation",
+      "pred": "neutral",
+      "confidence": 0.7733033299446106
+    },
+    {
+      "id": "M13",
+      "label": "motivation",
+      "pred": "neutral",
+      "confidence": 0.7209123373031616
+    },
+    {
+      "id": "M14",
+      "label": "motivation",
+      "pred": "motivation",
+      "confidence": 0.9461629390716553
+    },
+    {
+      "id": "M15",
+      "label": "motivation",
+      "pred": "motivation",
+      "confidence": 0.8792969584465027
+    },
+    {
+      "id": "M16",
+      "label": "motivation",
+      "pred": "anger_frustration",
+      "confidence": 0.5255270004272461
+    },
+    {
+      "id": "M17",
+      "label": "motivation",
+      "pred": "motivation",
+      "confidence": 0.8975508213043213
+    },
+    {
+      "id": "M18",
+      "label": "motivation",
+      "pred": "motivation",
+      "confidence": 0.5459408164024353
+    },
+    {
+      "id": "M19",
+      "label": "motivation",
+      "pred": "motivation",
+      "confidence": 0.9447908401489258
+    },
+    {
+      "id": "M20",
+      "label": "motivation",
+      "pred": "neutral",
+      "confidence": 0.5371991991996765
+    },
+    {
+      "id": "M21",
+      "label": "motivation",
+      "pred": "motivation",
+      "confidence": 0.5392296314239502
+    },
+    {
+      "id": "M22",
+      "label": "motivation",
+      "pred": "motivation",
+      "confidence": 0.8729134202003479
+    },
+    {
+      "id": "N01",
+      "label": "neutral",
+      "pred": "neutral",
+      "confidence": 0.5184016823768616
+    },
+    {
+      "id": "N02",
+      "label": "neutral",
+      "pred": "neutral",
+      "confidence": 0.9167723059654236
+    },
+    {
+      "id": "N03",
+      "label": "neutral",
+      "pred": "motivation",
+      "confidence": 0.5673572421073914
+    },
+    {
+      "id": "N04",
+      "label": "neutral",
+      "pred": "neutral",
+      "confidence": 0.9121043086051941
+    },
+    {
+      "id": "N05",
+      "label": "neutral",
+      "pred": "neutral",
+      "confidence": 0.9459782838821411
+    },
+    {
+      "id": "N06",
+      "label": "neutral",
+      "pred": "neutral",
+      "confidence": 0.9461432099342346
+    },
+    {
+      "id": "N07",
+      "label": "neutral",
+      "pred": "neutral",
+      "confidence": 0.9345889687538147
+    },
+    {
+      "id": "N08",
+      "label": "neutral",
+      "pred": "neutral",
+      "confidence": 0.9172111749649048
+    },
+    {
+      "id": "N09",
+      "label": "neutral",
+      "pred": "neutral",
+      "confidence": 0.9510905146598816
+    },
+    {
+      "id": "N10",
+      "label": "neutral",
+      "pred": "neutral",
+      "confidence": 0.8951335549354553
+    },
+    {
+      "id": "N11",
+      "label": "neutral",
+      "pred": "neutral",
+      "confidence": 0.7670058012008667
+    },
+    {
+      "id": "N12",
+      "label": "neutral",
+      "pred": "neutral",
+      "confidence": 0.8483706712722778
+    },
+    {
+      "id": "N13",
+      "label": "neutral",
+      "pred": "neutral",
+      "confidence": 0.8744457364082336
+    },
+    {
+      "id": "N14",
+      "label": "neutral",
+      "pred": "neutral",
+      "confidence": 0.4781101942062378
+    },
+    {
+      "id": "N15",
+      "label": "neutral",
+      "pred": "neutral",
+      "confidence": 0.929427981376648
+    },
+    {
+      "id": "N16",
+      "label": "neutral",
+      "pred": "neutral",
+      "confidence": 0.9519063234329224
+    },
+    {
+      "id": "N17",
+      "label": "neutral",
+      "pred": "neutral",
+      "confidence": 0.9469802975654602
+    },
+    {
+      "id": "N18",
+      "label": "neutral",
+      "pred": "motivation",
+      "confidence": 0.7259420156478882
+    },
+    {
+      "id": "N19",
+      "label": "neutral",
+      "pred": "neutral",
+      "confidence": 0.9431392550468445
+    },
+    {
+      "id": "N20",
+      "label": "neutral",
+      "pred": "neutral",
+      "confidence": 0.9341613054275513
+    },
+    {
+      "id": "N21",
+      "label": "neutral",
+      "pred": "neutral",
+      "confidence": 0.8590129613876343
+    },
+    {
+      "id": "N22",
+      "label": "neutral",
+      "pred": "neutral",
+      "confidence": 0.9379866719245911
+    }
+  ]
+}

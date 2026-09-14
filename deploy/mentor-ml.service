@@ -9,7 +9,7 @@ After=network.target
 [Service]
 Type=simple
 WorkingDirectory=%h/Coding/python
-ExecStart=/usr/bin/uv run --frozen uvicorn app.main:app --host 127.0.0.1 --port 8001
+ExecStart=/usr/bin/uv run --frozen --extra transformer uvicorn app.main:app --host 127.0.0.1 --port 8001
 Restart=on-failure
 RestartSec=5
 

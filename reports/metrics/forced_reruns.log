@@ -1,1 +1,2 @@
 2026-09-14T19:47:37+00:00	v2-fs2-linear_svm_calibrated-20260914	new model version (feature set fs2 + isotonic calibration); selection was done on validation only
+2026-09-14T20:02:47+00:00	v2-distilbert-20260914	test evaluation of the transformer model version

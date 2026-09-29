@@ -1,4 +1,4 @@
-.PHONY: setup data train tune evaluate predict serve test all transformer evaluate-transformer domain-eval
+.PHONY: setup data train tune evaluate predict serve test all transformer evaluate-transformer domain-eval data-v3 train-v3 evaluate-v3
 
 setup:
 	uv sync
@@ -39,3 +39,15 @@ evaluate-transformer:
 # Mentor-domain acceptance test (data/mentor_eval). MODEL=models/distilbert to score the transformer.
 domain-eval:
 	uv run --extra transformer python -m src.eval_domain --show-errors $(if $(MODEL),--model $(MODEL),)
+
+# v3: more and harder training data (GoEmotions rows v2 dropped, mixed emotions as soft labels, ISEAR)
+# + DeBERTa-v3-base. The v2 validation/test splits stay frozen, so results are directly comparable.
+data-v3:
+	uv run python -m src.prepare_extra
+
+train-v3:
+	HF_HUB_OFFLINE=$${HF_HUB_OFFLINE:-0} uv run --extra transformer python -m src.train_v3 --exp-id E6 --out models/deberta_v3
+
+# one-time test evaluation of the chosen v3 model + every "complex emotion" benchmark, against DistilBERT
+evaluate-v3:
+	uv run --extra transformer python -m src.evaluate_v3 --model models/deberta_v3

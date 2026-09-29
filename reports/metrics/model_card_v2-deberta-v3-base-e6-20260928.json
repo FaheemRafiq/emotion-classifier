@@ -1,0 +1,211 @@
+{
+  "model_version": "v2-deberta-v3-base-e6-20260928",
+  "experiment": "E6",
+  "model_kind": "deberta-v3-base",
+  "features": "transformer",
+  "created_at": "2026-09-28T18:02:01+00:00",
+  "task": "Emotion classification of user text (not a medical or psychological diagnosis)",
+  "classes": [
+    "joy",
+    "sadness",
+    "fear_anxiety",
+    "anger_frustration",
+    "guilt",
+    "motivation",
+    "neutral"
+  ],
+  "settings": "microsoft/deberta-v3-base; data=v3[goemotions+goemotions_partial+goemotions_mixed+isear] rows=36460; epochs=4 batch=8x4 lr=3e-05 llrd=0.9 cosine warmup=0.1 wd=0.01 max_len=256 bf16 length-grouped frozen-word-embeddings ; soft-target CE sqrt-inverse-freq weights; label_smoothing=0.0; seed=42",
+  "training_data": {
+    "version": "v3",
+    "sources": [
+      "goemotions",
+      "goemotions_partial",
+      "goemotions_mixed",
+      "isear"
+    ],
+    "rows": 36460,
+    "by_source": {
+      "goemotions": 26907,
+      "isear": 5121,
+      "goemotions_partial": 3415,
+      "goemotions_mixed": 1017
+    }
+  },
+  "best_checkpoint": {
+    "f1": 0.7206265199388763,
+    "isear": 0.7832771433065913,
+    "step": 1710,
+    "epoch": 1.5
+  },
+  "history": [
+    {
+      "step": 570,
+      "epoch": 0.5,
+      "val_macro_f1": 0.6745718688444933,
+      "isear_val_macro_f1": 0.7104117853848031,
+      "seconds": 1120
+    },
+    {
+      "step": 1140,
+      "epoch": 1.0,
+      "val_macro_f1": 0.7005589558125174,
+      "isear_val_macro_f1": 0.783858805169656,
+      "seconds": 1822
+    },
+    {
+      "step": 1710,
+      "epoch": 1.5,
+      "val_macro_f1": 0.7206265199388763,
+      "isear_val_macro_f1": 0.7832771433065913,
+      "seconds": 1992
+    },
+    {
+      "step": 2280,
+      "epoch": 2.0,
+      "val_macro_f1": 0.7101244572543163,
+      "isear_val_macro_f1": 0.7962777275589875,
+      "seconds": 2159
+    },
+    {
+      "step": 2850,
+      "epoch": 2.5,
+      "val_macro_f1": 0.6941840748341361,
+      "isear_val_macro_f1": 0.8155594843290244,
+      "seconds": 2327
+    },
+    {
+      "step": 3420,
+      "epoch": 3.0,
+      "val_macro_f1": 0.714883123465727,
+      "isear_val_macro_f1": 0.8179128851614887,
+      "seconds": 2497
+    },
+    {
+      "step": 3990,
+      "epoch": 3.5,
+      "val_macro_f1": 0.7075155420287709,
+      "isear_val_macro_f1": 0.8196759024963048,
+      "seconds": 2660
+    },
+    {
+      "step": 4560,
+      "epoch": 4.0,
+      "val_macro_f1": 0.7050773955042041,
+      "isear_val_macro_f1": 0.8169262978856173,
+      "seconds": 2823
+    }
+  ],
+  "temperature": 1.0396660566329956,
+  "max_length": 256,
+  "validation_metrics": {
+    "accuracy": 0.7981542125632629,
+    "macro_precision": 0.6988617720061745,
+    "macro_recall": 0.755506622607624,
+    "macro_f1": 0.7206265199388763,
+    "weighted_f1": 0.7991534920108719
+  },
+  "validation_per_class": {
+    "joy": {
+      "precision": 0.8730684326710817,
+      "recall": 0.9186991869918699,
+      "f1-score": 0.8953027730616865,
+      "support": 861.0
+    },
+    "sadness": {
+      "precision": 0.4755244755244755,
+      "recall": 0.7472527472527473,
+      "f1-score": 0.5811965811965812,
+      "support": 91.0
+    },
+    "fear_anxiety": {
+      "precision": 0.6404494382022472,
+      "recall": 0.7916666666666666,
+      "f1-score": 0.7080745341614907,
+      "support": 72.0
+    },
+    "anger_frustration": {
+      "precision": 0.6596638655462185,
+      "recall": 0.6317907444668008,
+      "f1-score": 0.645426515930113,
+      "support": 497.0
+    },
+    "guilt": {
+      "precision": 0.6285714285714286,
+      "recall": 0.7213114754098361,
+      "f1-score": 0.6717557251908397,
+      "support": 61.0
+    },
+    "motivation": {
+      "precision": 0.7668711656441718,
+      "recall": 0.6720430107526881,
+      "f1-score": 0.7163323782234957,
+      "support": 186.0
+    },
+    "neutral": {
+      "precision": 0.8478835978835979,
+      "recall": 0.8057825267127593,
+      "f1-score": 0.8262971318079279,
+      "support": 1591.0
+    },
+    "accuracy": 0.7981542125632629,
+    "macro avg": {
+      "precision": 0.6988617720061745,
+      "recall": 0.755506622607624,
+      "f1-score": 0.7206265199388763,
+      "support": 3359.0
+    },
+    "weighted avg": {
+      "precision": 0.8034872422491928,
+      "recall": 0.7981542125632629,
+      "f1-score": 0.7991534920108719,
+      "support": 3359.0
+    }
+  },
+  "validation_ece": {
+    "before_temperature": 0.03104731842462914,
+    "after_temperature": 0.02338662517322749
+  },
+  "validation_thresholds": [
+    {
+      "threshold": 0.0,
+      "coverage": 1.0,
+      "accuracy_at_threshold": 0.7981542125632629,
+      "non_neutral_sent": 0.549866031557011,
+      "non_neutral_precision": 0.7574445046020574
+    },
+    {
+      "threshold": 0.4,
+      "coverage": 0.9836260791902351,
+      "accuracy_at_threshold": 0.8035714285714286,
+      "non_neutral_sent": 0.5397439714200655,
+      "non_neutral_precision": 0.7661334804191947
+    },
+    {
+      "threshold": 0.5,
+      "coverage": 0.9315272402500744,
+      "accuracy_at_threshold": 0.8200703100031959,
+      "non_neutral_sent": 0.509377791009229,
+      "non_neutral_precision": 0.7866744593804793
+    },
+    {
+      "threshold": 0.6,
+      "coverage": 0.8484668055969038,
+      "accuracy_at_threshold": 0.8494736842105263,
+      "non_neutral_sent": 0.4638285203929741,
+      "non_neutral_precision": 0.8209242618741976
+    },
+    {
+      "threshold": 0.7,
+      "coverage": 0.7537957725513545,
+      "accuracy_at_threshold": 0.8799368088467614,
+      "non_neutral_sent": 0.41292051205715985,
+      "non_neutral_precision": 0.8572458543619322
+    }
+  ],
+  "versions": {
+    "python": "3.12.14",
+    "torch": "2.14.0+cu130",
+    "cuda": "13.0",
+    "gpu": "NVIDIA GeForce RTX 3050 6GB Laptop GPU"
+  }
+}

@@ -12,6 +12,8 @@ data/processed/*.parquet
 # Model artifacts (re-created by `make evaluate` / `make transformer`; model_card.json and frozen_config.json are kept)
 models/*.joblib
 models/distilbert/
+models/deberta_v3/
 
 # Generated report HTML (the PDF is kept)
 reports/*.html
+data/processed_v3/*.parquet

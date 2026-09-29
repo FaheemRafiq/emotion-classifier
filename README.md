@@ -14,7 +14,7 @@ Node.js / Express (mentor-ai/apps/api)  ──►  PostgreSQL
     │  POST /predict (1.5 s timeout, optional, fails open)
 Python / FastAPI  (this repo, 127.0.0.1:8001)
     │
-DistilBERT (default)  or  TF-IDF + calibrated LinearSVM (fallback)
+DeBERTa-v3 (default, v3)  →  DistilBERT (v2)  →  TF-IDF + calibrated LinearSVM (fallbacks)
     │
 emotion + confidence ──► Mentor AI system prompt ──► LLM ──► final response
 ```
@@ -59,7 +59,13 @@ set, never on test scores.
 |---|---:|---:|---:|---:|---:|
 | TF-IDF words (fs1) + LinearSVM, sigmoid | 0.692 | 0.672 | 0.767 | — | 0.389 |
 | TF-IDF words + emoji + char n-grams (fs2) + LinearSVM, isotonic | 0.711 | 0.686 | 0.779 | 0.026 | 0.431 |
-| **DistilBERT, temperature-calibrated (deployed)** | **0.728** | **0.717** | **0.787** | **0.015** | **0.602** |
+| DistilBERT, temperature-calibrated (v2) | 0.728 | 0.717 | 0.787 | 0.015 | 0.602 |
+| **DeBERTa-v3-base + v3 data, temperature-calibrated (deployed, v3)** | **0.721** | **0.721** | **0.795** | **0.017** | **0.810** |
+
+**v3 (September 2026)** adds harder training data (GoEmotions rows with a second emotion, mixed emotions as soft
+labels, ISEAR situation descriptions) and a stronger backbone. Besides the table above it reaches **0.781 macro F1 on
+implicit emotion (ISEAR test, DistilBERT 0.499)** and finds both emotions of a mixed message twice as often. The full
+method, every benchmark and the rejected alternatives are in **[docs/MODEL_TRAINING.md](docs/MODEL_TRAINING.md)**.
 
 The Mentor-domain column is scored on 154 check-in style sentences in `data/mentor_eval/`. **Their labels are still an
 unreviewed draft**, so treat that column as provisional until the review is done (see its README). It shows the real
@@ -121,7 +127,8 @@ make test                                               # data hygiene, leakage 
 or text longer than 5,000 characters, returns 422.
 
 To choose a model explicitly, set `MODEL_PATH`: `MODEL_PATH=models/emotion_classifier.joblib make serve`. Without it, the
-service loads DistilBERT when it has been trained and PyTorch is installed, and the TF-IDF model otherwise.
+service loads DeBERTa-v3 (`models/deberta_v3/`), else DistilBERT, when trained and PyTorch is installed, and the
+TF-IDF model otherwise.
 
 Measured latency per message:
 
@@ -129,6 +136,8 @@ Measured latency per message:
 |---|---|---|
 | DistilBERT, RTX 3050 | 4 ms | |
 | DistilBERT, CPU | 13 ms | about 1 GB RAM |
+| DeBERTa-v3, RTX 3050 | 11 ms | |
+| DeBERTa-v3, CPU | 89 ms | |
 | TF-IDF | 2 ms | |
 
 To run the service in the background:

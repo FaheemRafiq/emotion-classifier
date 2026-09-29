@@ -1,0 +1,37 @@
+
+=== baseline: v2-distilbert-20260914 ===
+
+=== new: v2-deberta-v3-base-e6-20260928 ===
+
+=== v2-deberta-v3-base-e6-20260928 - GoEmotions test ===
+                   precision    recall  f1-score   support
+
+              joy     0.8791    0.9287    0.9032       814
+          sadness     0.4967    0.7009    0.5814       107
+     fear_anxiety     0.5963    0.8125    0.6878        80
+anger_frustration     0.6647    0.6152    0.6390       551
+            guilt     0.6857    0.7164    0.7007        67
+       motivation     0.7548    0.6648    0.7069       176
+          neutral     0.8440    0.8125    0.8279      1605
+
+         accuracy                         0.7953      3400
+        macro avg     0.7031    0.7502    0.7210      3400
+     weighted avg     0.7989    0.7953    0.7955      3400
+
+
+benchmark                                           DistilBERT (v2)   new (v3)   change
+GoEmotions test - macro F1                                   0.7167     0.7210  +0.0043
+GoEmotions test - accuracy                                   0.7871     0.7953  +0.0082
+  slice negation (n=747) - macro F1                          0.6818     0.6694  -0.0125
+  slice contrast (n=359) - macro F1                          0.6884     0.7058  +0.0174
+  slice implicit (n=1904) - macro F1                         0.5150     0.5540  +0.0390
+  slice long (n=164) - macro F1                              0.6392     0.6985  +0.0593
+  slice sarcasm_cue (n=15) - macro F1                        0.4750     0.4571  -0.0178
+  slice emoji (n=142) - macro F1                             0.7757     0.7537  -0.0221
+ISEAR implicit test - macro F1                               0.4985     0.7807  +0.2822
+Mixed emotions - top-1 in gold                               0.7963     0.7963  +0.0000
+Mixed emotions - top-2 covers all                            0.3241     0.4815  +0.1574
+Mentor domain (provisional) - macro F1                       0.6020     0.8103  +0.2083
+Latency per message (ms)                                     2.4522    10.9824  +8.5302
+
+Saved final_test_v2-deberta-v3-base-e6-20260928.json and complex_eval_v2-deberta-v3-base-e6-20260928.json

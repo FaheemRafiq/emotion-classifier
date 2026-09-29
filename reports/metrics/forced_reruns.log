@@ -1,2 +1,5 @@
 2026-09-14T19:47:37+00:00	v2-fs2-linear_svm_calibrated-20260914	new model version (feature set fs2 + isotonic calibration); selection was done on validation only
 2026-09-14T20:02:47+00:00	v2-distilbert-20260914	test evaluation of the transformer model version
+2026-09-28T18:04:28+00:00	v2-deberta-v3-base-e6-20260928	first test evaluation of the v3 model version (selected on validation only)
+2026-09-28T18:04:28+00:00	v2-distilbert-20260914	analysis only: baseline test predictions recomputed for the per-slice comparison with the v3 model; no model was selected or changed
+2026-09-28T19:40:55+00:00	v2-deberta-v3-base-e6-20260928	analysis only: test predictions recomputed to draw the confusion-matrix figure for the FYP report; no model was selected or changed

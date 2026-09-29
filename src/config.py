@@ -7,6 +7,8 @@ ROOT = Path(__file__).resolve().parents[1]
 DATA_RAW = ROOT / "data" / "raw"
 DATA_PROCESSED = ROOT / "data" / "processed"
 MANIFEST_PATH = DATA_PROCESSED / "manifest.json"
+# v3: extra training data (GoEmotions rows v2 dropped + ISEAR); the v2 validation/test splits stay frozen.
+DATA_PROCESSED_V3 = ROOT / "data" / "processed_v3"
 
 MODELS_DIR = ROOT / "models"
 MODEL_PATH = MODELS_DIR / "emotion_classifier.joblib"
@@ -68,6 +70,9 @@ CHAR_TFIDF = {
 # Optional transformer (E4)
 TRANSFORMER_NAME = "distilbert-base-uncased"
 TRANSFORMER_DIR = MODELS_DIR / "distilbert"
+# v3 (deployed): DeBERTa-v3-base trained on the v3 data (src/train_v3.py). Served first when present;
+# DistilBERT and then the TF-IDF model are automatic fallbacks.
+V3_TRANSFORMER_DIR = MODELS_DIR / "deberta_v3"
 
 DOMAIN_EVAL_CSV = ROOT / "data" / "mentor_eval" / "mentor_eval.csv"
 

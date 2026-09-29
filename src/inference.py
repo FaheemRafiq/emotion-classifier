@@ -43,7 +43,7 @@ class TransformerPredictor:
         self.batch_size = batch_size
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.tokenizer = AutoTokenizer.from_pretrained(path)
-        self.model = AutoModelForSequenceClassification.from_pretrained(path).to(self.device).eval()
+        self.model = AutoModelForSequenceClassification.from_pretrained(path, dtype=torch.float32).to(self.device).eval()
         self.classes = [self.model.config.id2label[i] for i in range(self.model.config.num_labels)]
         card = _read_card(path / "model_card.json")
         self.model_version = card.get("model_version", "unknown")
@@ -79,17 +79,21 @@ Predictor = SklearnPredictor | TransformerPredictor
 
 
 def default_model_path() -> Path:
-    """MODEL_PATH env if set; else the fine-tuned DistilBERT if trained and PyTorch is installed; else the joblib model."""
+    """MODEL_PATH env if set; else DeBERTa-v3 (v3), else DistilBERT (v2), if trained and PyTorch is installed;
+    else the TF-IDF joblib model."""
     if os.environ.get("MODEL_PATH"):
         return Path(os.environ["MODEL_PATH"])
-    if (config.TRANSFORMER_DIR / "model_card.json").exists():
-        try:
-            import torch  # noqa: F401
-            import transformers  # noqa: F401
+    for directory in (config.V3_TRANSFORMER_DIR, config.TRANSFORMER_DIR):
+        if (directory / "model_card.json").exists():
+            try:
+                import torch  # noqa: F401
+                import transformers  # noqa: F401
 
-            return config.TRANSFORMER_DIR
-        except ImportError:
-            print("DistilBERT found but the `transformer` extra is not installed; serving the TF-IDF model instead.")
+                return directory
+            except ImportError:
+                print(f"{directory.name} found but the `transformer` extra is not installed; "
+                      "serving the TF-IDF model instead.")
+                break
     return config.MODEL_PATH
 
 

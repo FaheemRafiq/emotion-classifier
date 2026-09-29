@@ -1,0 +1,105 @@
+{
+  "version": "v3",
+  "label_map_version": "v2",
+  "classes": [
+    "joy",
+    "sadness",
+    "fear_anxiety",
+    "anger_frustration",
+    "guilt",
+    "motivation",
+    "neutral"
+  ],
+  "base_train_sha256": "950072a33e263c205daa95bfe7c49a01b16b04b737351115c4ec60dd65482485",
+  "isear": {
+    "dataset": "gsri-18/ISEAR-dataset-complete",
+    "mapping": {
+      "joy": "joy",
+      "sadness": "sadness",
+      "fear": "fear_anxiety",
+      "anger": "anger_frustration",
+      "disgust": "anger_frustration",
+      "shame": "guilt",
+      "guilt": "guilt"
+    },
+    "filtering": {
+      "raw_rows": 7516,
+      "removed_non_response_or_too_short": 135,
+      "removed_same_text_different_labels": 11,
+      "removed_exact_duplicates": 55
+    },
+    "split": "stratified 70/15/15 by original ISEAR emotion, seed 42"
+  },
+  "filtering": {
+    "removed_overlap_with_eval_sets": 29,
+    "removed_duplicates_across_sources": 25
+  },
+  "files": {
+    "train": {
+      "file": "train.parquet",
+      "sha256": "1297021cbf2bed45d4ebe3b50ed0f493994844486988d890935ae7d3f2b27352",
+      "rows": 36460,
+      "by_source": {
+        "goemotions": 26907,
+        "isear": 5121,
+        "goemotions_partial": 3415,
+        "goemotions_mixed": 1017
+      },
+      "effective_class_mass": {
+        "joy": 9108.5,
+        "sadness": 1852.6,
+        "fear_anxiety": 1390.1,
+        "anger_frustration": 6453.4,
+        "guilt": 2173.6,
+        "motivation": 1964.8,
+        "neutral": 13517.0
+      }
+    },
+    "isear_validation": {
+      "file": "isear_validation.parquet",
+      "sha256": "150bf16000e864e6ba866b03b8366d730037aadeb8461b48b9a979281f7655bb",
+      "rows": 1098,
+      "class_counts": {
+        "anger_frustration": 316,
+        "guilt": 310,
+        "fear_anxiety": 159,
+        "joy": 159,
+        "sadness": 154
+      }
+    },
+    "isear_test": {
+      "file": "isear_test.parquet",
+      "sha256": "58d2bf1fb8081bb08e5b5de4008b77fa7b93cad715c9b5a4b67195fe9a1c7968",
+      "rows": 1096,
+      "class_counts": {
+        "anger_frustration": 315,
+        "guilt": 310,
+        "joy": 160,
+        "fear_anxiety": 158,
+        "sadness": 153
+      }
+    },
+    "mixed_test": {
+      "file": "mixed_test.parquet",
+      "sha256": "319295c65d6626124d15c0cca35a0de906173a69bf9cf6e6f6a7a2eb5ad2ff41",
+      "rows": 108,
+      "gold_combinations": {
+        "joy|motivation": 28,
+        "anger_frustration|joy": 22,
+        "anger_frustration|sadness": 19,
+        "anger_frustration|motivation": 6,
+        "joy|sadness": 6,
+        "anger_frustration|guilt": 5,
+        "guilt|motivation": 5,
+        "guilt|sadness": 3,
+        "anger_frustration|fear_anxiety": 3,
+        "fear_anxiety|joy": 3,
+        "fear_anxiety|sadness": 2,
+        "joy|motivation|sadness": 2,
+        "guilt|joy": 1,
+        "motivation|sadness": 1,
+        "fear_anxiety|motivation|sadness": 1
+      }
+    }
+  }
+}

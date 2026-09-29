@@ -3,8 +3,9 @@
 Run: uv run uvicorn app.main:app --host 127.0.0.1 --port 8001
 (port 8001 because the Mentor AI Express API already uses 8000)
 
-MODEL_PATH selects the model: a .joblib file (TF-IDF pipeline) or a directory (DistilBERT).
-Default: models/distilbert when trained and the `transformer` extra is installed, else models/emotion_classifier.joblib.
+MODEL_PATH selects the model: a .joblib file (TF-IDF pipeline) or a transformer directory.
+Default: models/deberta_v3 (v3), else models/distilbert (v2), when trained and the `transformer` extra is installed;
+else models/emotion_classifier.joblib.
 """
 from contextlib import asynccontextmanager
 from typing import Any

@@ -17,7 +17,12 @@ dependencies = [
 
 [project.optional-dependencies]
 # Optional transformer phase (guide §22): CUDA 13 build of PyTorch for the RTX 3050.
-transformer = ["torch>=2.13", "transformers>=4.50"]
+transformer = [
+    "protobuf>=5",
+    "sentencepiece>=0.2",
+    "torch>=2.13",
+    "transformers>=4.50",
+]
 
 [[tool.uv.index]]
 name = "pytorch-cu130"

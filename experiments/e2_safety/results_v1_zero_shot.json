@@ -1,0 +1,327 @@
+{
+  "model": "gpt-4o-mini",
+  "temperature": 0,
+  "prompt_hash": "66071d3e6b58",
+  "tuned_on_benchmark": false,
+  "splits": {
+    "validation": {
+      "per_category": {
+        "Bodily harm": {
+          "n": 80,
+          "accuracy": 0.9375,
+          "precision": 1.0,
+          "recall": 0.875,
+          "f1": 0.9333333333333333,
+          "bloom": {
+            "accuracy": 0.98,
+            "precision": 0.99,
+            "recall": 0.96,
+            "f1": 0.98
+          }
+        },
+        "Body image": {
+          "n": 80,
+          "accuracy": 0.8125,
+          "precision": 0.9629629629629629,
+          "recall": 0.65,
+          "f1": 0.7761194029850746,
+          "bloom": {
+            "accuracy": 0.95,
+            "precision": 1.0,
+            "recall": 0.89,
+            "f1": 0.94
+          }
+        },
+        "Mental health": {
+          "n": 80,
+          "accuracy": 0.8375,
+          "precision": 1.0,
+          "recall": 0.675,
+          "f1": 0.8059701492537313,
+          "bloom": {
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          }
+        },
+        "Negative mindsets": {
+          "n": 80,
+          "accuracy": 0.975,
+          "precision": 1.0,
+          "recall": 0.95,
+          "f1": 0.9743589743589743,
+          "bloom": {
+            "accuracy": 0.97,
+            "precision": 0.98,
+            "recall": 0.97,
+            "f1": 0.97
+          }
+        },
+        "Inaccurate advice": {
+          "n": 80,
+          "accuracy": 0.9625,
+          "precision": 0.9743589743589743,
+          "recall": 0.95,
+          "f1": 0.9620253164556962,
+          "bloom": {
+            "accuracy": 0.99,
+            "precision": 1.0,
+            "recall": 0.98,
+            "f1": 0.99
+          }
+        }
+      },
+      "strict": {
+        "n": 400,
+        "accuracy": 0.825,
+        "precision": 0.9850746268656716,
+        "recall": 0.66,
+        "f1": 0.7904191616766467,
+        "f1_ci95": [
+          0.737,
+          0.837
+        ],
+        "bloom": {
+          "accuracy": 0.92,
+          "precision": 0.89,
+          "recall": 0.96,
+          "f1": 0.92
+        }
+      },
+      "relaxed": {
+        "n": 400,
+        "accuracy": 0.905,
+        "precision": 0.9879518072289156,
+        "recall": 0.82,
+        "f1": 0.8961748633879781,
+        "f1_ci95": [
+          0.862,
+          0.926
+        ],
+        "bloom": {
+          "accuracy": 0.93,
+          "precision": 0.89,
+          "recall": 0.98,
+          "f1": 0.93
+        }
+      }
+    },
+    "test": {
+      "per_category": {
+        "Bodily harm": {
+          "n": 20,
+          "accuracy": 0.95,
+          "precision": 1.0,
+          "recall": 0.9,
+          "f1": 0.9473684210526316,
+          "bloom": {
+            "accuracy": 0.9,
+            "precision": 0.92,
+            "recall": 0.88,
+            "f1": 0.9
+          }
+        },
+        "Body image": {
+          "n": 20,
+          "accuracy": 0.9,
+          "precision": 0.8333333333333334,
+          "recall": 1.0,
+          "f1": 0.9090909090909091,
+          "bloom": {
+            "accuracy": 0.91,
+            "precision": 0.84,
+            "recall": 1.0,
+            "f1": 0.91
+          }
+        },
+        "Mental health": {
+          "n": 20,
+          "accuracy": 0.8,
+          "precision": 1.0,
+          "recall": 0.6,
+          "f1": 0.7499999999999999,
+          "bloom": {
+            "accuracy": 0.8,
+            "precision": 0.75,
+            "recall": 0.9,
+            "f1": 0.82
+          }
+        },
+        "Negative mindsets": {
+          "n": 20,
+          "accuracy": 1.0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "bloom": {
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          }
+        },
+        "Inaccurate advice": {
+          "n": 20,
+          "accuracy": 0.6,
+          "precision": 0.6666666666666666,
+          "recall": 0.4,
+          "f1": 0.5,
+          "bloom": {
+            "accuracy": 0.95,
+            "precision": 0.91,
+            "recall": 1.0,
+            "f1": 0.95
+          }
+        }
+      },
+      "strict": {
+        "n": 100,
+        "accuracy": 0.76,
+        "precision": 0.8823529411764706,
+        "recall": 0.6,
+        "f1": 0.7142857142857143,
+        "f1_ci95": [
+          0.595,
+          0.815
+        ],
+        "bloom": {
+          "accuracy": 0.85,
+          "precision": 0.78,
+          "recall": 0.96,
+          "f1": 0.86
+        }
+      },
+      "relaxed": {
+        "n": 100,
+        "accuracy": 0.85,
+        "precision": 0.9069767441860465,
+        "recall": 0.78,
+        "f1": 0.8387096774193548,
+        "f1_ci95": [
+          0.75,
+          0.914
+        ],
+        "bloom": {
+          "accuracy": 0.85,
+          "precision": 0.78,
+          "recall": 0.96,
+          "f1": 0.86
+        }
+      }
+    },
+    "test_corrected": {
+      "per_category": {
+        "Bodily harm": {
+          "n": 20,
+          "accuracy": 0.95,
+          "precision": 1.0,
+          "recall": 0.9,
+          "f1": 0.9473684210526316,
+          "bloom": {
+            "accuracy": 0.93,
+            "precision": 0.95,
+            "recall": 0.91,
+            "f1": 0.93
+          }
+        },
+        "Body image": {
+          "n": 20,
+          "accuracy": 0.9,
+          "precision": 0.9166666666666666,
+          "recall": 0.9166666666666666,
+          "f1": 0.9166666666666666,
+          "bloom": {
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 0.99,
+            "f1": 1.0
+          }
+        },
+        "Mental health": {
+          "n": 20,
+          "accuracy": 0.6,
+          "precision": 1.0,
+          "recall": 0.42857142857142855,
+          "f1": 0.6,
+          "bloom": {
+            "accuracy": 0.9,
+            "precision": 1.0,
+            "recall": 0.86,
+            "f1": 0.92
+          }
+        },
+        "Negative mindsets": {
+          "n": 20,
+          "accuracy": 1.0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "bloom": {
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          }
+        },
+        "Inaccurate advice": {
+          "n": 20,
+          "accuracy": 0.65,
+          "precision": 0.8333333333333334,
+          "recall": 0.45454545454545453,
+          "f1": 0.5882352941176471,
+          "bloom": {
+            "accuracy": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          }
+        }
+      },
+      "strict": {
+        "n": 100,
+        "accuracy": 0.72,
+        "precision": 0.9393939393939394,
+        "recall": 0.543859649122807,
+        "f1": 0.688888888888889,
+        "f1_ci95": [
+          0.565,
+          0.79
+        ],
+        "bloom": {
+          "accuracy": 0.91,
+          "precision": 0.89,
+          "recall": 0.95,
+          "f1": 0.92
+        }
+      },
+      "relaxed": {
+        "n": 100,
+        "accuracy": 0.82,
+        "precision": 0.9534883720930233,
+        "recall": 0.7192982456140351,
+        "f1": 0.8200000000000001,
+        "f1_ci95": [
+          0.725,
+          0.895
+        ],
+        "bloom": {
+          "accuracy": 0.92,
+          "precision": 0.9,
+          "recall": 0.97,
+          "f1": 0.93
+        }
+      }
+    }
+  },
+  "cost_latency": {
+    "calls": 510,
+    "mean_prompt_tokens": 1420.4,
+    "mean_completion_tokens": 37.8,
+    "usd_per_check": 0.0002358,
+    "usd_total_run": 0.1202,
+    "latency_s_median": 2.172,
+    "latency_s_p90": 6.143,
+    "price_source": "OpenAI list price gpt-4o-mini $0.15/1M input, $0.60/1M output (2026-10-09)"
+  }
+}

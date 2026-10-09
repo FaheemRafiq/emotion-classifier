@@ -17,3 +17,7 @@ models/deberta_v3/
 # Generated report HTML (the PDF is kept)
 reports/*.html
 data/processed_v3/*.parquet
+
+# Bloom safety benchmark (research/educational use only; not redistributed)
+experiments/e2_safety/data/
+experiments/e2_safety/predictions*.jsonl

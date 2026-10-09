@@ -1,0 +1,56 @@
+{
+  "assumptions": {
+    "chat_tokens_in_out": [
+      3000,
+      250
+    ],
+    "bloom_classifier_tokens_equal_to_ours": true,
+    "prices_per_1M": {
+      "gpt-4o": [
+        2.5,
+        10.0
+      ],
+      "gpt-4o-mini": [
+        0.15,
+        0.6
+      ]
+    },
+    "price_date": "2026-10-09"
+  },
+  "measured": {
+    "guard_tokens_in_out": [
+      1719.4,
+      38.4
+    ],
+    "guard_latency_s_median": 2.05,
+    "guard_latency_s_p90": 6.38,
+    "emotion_llm_tokens_in_out_est": [
+      326,
+      20
+    ],
+    "deberta_latency_ms_gpu": 11.0,
+    "deberta_latency_ms_cpu": 89.5
+  },
+  "totals": {
+    "bloom_style": {
+      "per_message_usd": 0.03442860368428717,
+      "per_1000_messages_usd": 34.42860368428717,
+      "items_per_1000": {
+        "chat (GPT-4o)": 10.0,
+        "safety: 5 category classifiers on each reply (GPT-4o)": 23.412,
+        "emotion: none (if added via GPT-4o)": 1.016
+      }
+    },
+    "intent2act": {
+      "per_message_usd": 0.0011619,
+      "per_1000_messages_usd": 1.1619,
+      "items_per_1000": {
+        "chat (gpt-4o-mini, routed)": 0.6,
+        "safety: guard on user message + reply (gpt-4o-mini)": 0.562,
+        "emotion: local DeBERTa-v3": 0.0
+      }
+    }
+  },
+  "safety_cost_ratio_bloom_over_ours": 41.7,
+  "total_cost_ratio_bloom_over_ours": 29.6
+}
